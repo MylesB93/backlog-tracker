@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BacklogTracker")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+be65c01dec2d888e882830fe8e33c8d519a13b20")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d682ac5b72defc14fb4a495b00e7c1f5e5b0e029")]
 [assembly: System.Reflection.AssemblyProductAttribute("BacklogTracker")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BacklogTracker")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
