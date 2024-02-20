@@ -16,5 +16,8 @@ namespace BacklogTracker.Pages
         {
 
         }
+
+        [BindProperty(SupportsGet = true)]
+        public string SearchTerm { get; set; }
     }
 }
