@@ -12,5 +12,8 @@ namespace BacklogTracker.Models
 
         [XmlElement("resource_type")]
         public string ResourceType { get; set; } // TODO: Change this to enum?
+
+        [XmlElement("description")]
+        public string Description { get; set; }
     }
 }

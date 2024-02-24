@@ -1,27 +1,35 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+	ViewData["Title"] = "Home page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+	<h1 class="display-4">Welcome</h1>
+	<p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
-<form method="post">
-    <div class="input-group">
-        <input class="form-control" asp-for="SearchTerm" name="query">
-        <div class="input-group-append">
-            <button class="btn btn-primary" type="submit">Search</button>
-        </div>
-    </div>
+<form method="post" style="margin-bottom:1rem">
+	<div class="input-group">
+		<input class="form-control" asp-for="SearchTerm" name="query">
+		<div class="input-group-append">
+			<button class="btn btn-primary" type="submit">Search</button>
+		</div>
+	</div>
 </form>
 
 @if (Model.GamesResponse != null)
 {
-    foreach (var game in Model.GamesResponse.Games)
-    {
-        <p><a href="@game.SiteDetailUrl" target="_blank">@game.Name</a></p>
-    }
+	foreach (var game in Model.GamesResponse.Games)
+	{
+		<div class="card" style="width:18rem;margin-bottom:1rem">
+			<div class="card-body">
+				<h5 class="card-title">
+					<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
+				</h5>
+				<p class="card-text">@game.Description.Substring(0,50)</p>
+				<a class="btn btn-primary">+</a>
+			</div>
+		</div>
+	}
 }
