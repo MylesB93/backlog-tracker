@@ -17,3 +17,11 @@
         </div>
     </div>
 </form>
+
+@if (Model.GamesResponse != null)
+{
+    foreach (var game in Model.GamesResponse.Games)
+    {
+        <p><a href="@game.SiteDetailUrl" target="_blank">@game.Name</a></p>
+    }
+}

@@ -11,6 +11,11 @@ namespace BacklogTracker.Pages
         private readonly ILogger<IndexModel> _logger;
         private IOptions<GiantBombConfiguration> _giantBombConfiguration;
 
+        [BindProperty(SupportsGet = true)]
+        public string SearchTerm { get; set; }
+
+        public Response GamesResponse { get; set; }
+
         public IndexModel(ILogger<IndexModel> logger, IOptions<GiantBombConfiguration> giantBombConfiguration)
         {
             _logger = logger;
@@ -30,23 +35,18 @@ namespace BacklogTracker.Pages
             client.BaseAddress = new Uri("https://www.giantbomb.com/api/search/");
             client.DefaultRequestHeaders.Add("User-Agent", "My Awesome App");
             // Get data response
-            var response = client.GetAsync($"?api_key={_giantBombConfiguration.Value.GiantBombAPIKey}&query={query}&resources=game&field_list=name,api_detail_url").Result;
+            var response = client.GetAsync($"?api_key={_giantBombConfiguration.Value.GiantBombAPIKey}&query={query}&resources=game&field_list=name,site_detail_url").Result;
 
             XmlSerializer xs = new XmlSerializer(typeof(Response));
 
             using (StreamReader reader = new StreamReader(response.Content.ReadAsStreamAsync().Result))
             {
-                var results = (Response)xs.Deserialize(reader);
+                GamesResponse = (Response)xs.Deserialize(reader);
                 _logger.LogInformation("Deserialization complete!");
             }
 
             _logger.LogInformation("Request complete!");
         }
-
-        [BindProperty(SupportsGet = true)]
-        public string SearchTerm { get; set; }
-
-
     }
     public class Serializer
     {

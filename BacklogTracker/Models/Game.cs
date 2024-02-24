@@ -7,8 +7,8 @@ namespace BacklogTracker.Models
         [XmlElement("name")]
         public string Name { get; set; }
 
-        [XmlElement("api_detail_url")]
-        public string ApiDetailUrl { get; set; }
+        [XmlElement("site_detail_url")]
+        public string SiteDetailUrl { get; set; }
 
         [XmlElement("resource_type")]
         public string ResourceType { get; set; } // TODO: Change this to enum?
