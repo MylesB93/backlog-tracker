@@ -33,7 +33,7 @@ namespace BacklogTracker.Pages
 
             using var client = new HttpClient();
             client.BaseAddress = new Uri("https://www.giantbomb.com/api/search/");
-            client.DefaultRequestHeaders.Add("User-Agent", "My Awesome App");
+            client.DefaultRequestHeaders.Add("User-Agent", "Backlog Tracker app");
             // Get data response
             var response = client.GetAsync($"?api_key={_giantBombConfiguration.Value.GiantBombAPIKey}&query={query}&resources=game&field_list=name,site_detail_url").Result;
 
