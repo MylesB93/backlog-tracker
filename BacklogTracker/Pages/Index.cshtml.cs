@@ -1,23 +1,20 @@
 using BacklogTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Policy;
-using System.Xml.Linq;
+using Microsoft.Extensions.Options;
 using System.Xml.Serialization;
-using BacklogTracker.Data;
 
 namespace BacklogTracker.Pages
 {
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
+        private IOptions<GiantBombConfiguration> _giantBombConfiguration;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(ILogger<IndexModel> logger, IOptions<GiantBombConfiguration> giantBombConfiguration)
         {
             _logger = logger;
+            _giantBombConfiguration = giantBombConfiguration;
         }
 
         public void OnGet()
@@ -33,7 +30,7 @@ namespace BacklogTracker.Pages
             client.BaseAddress = new Uri("https://www.giantbomb.com/api/search/");
             client.DefaultRequestHeaders.Add("User-Agent", "My Awesome App");
             // Get data response
-            var response = client.GetAsync($"?api_key=971b75abd389a994ecfcc70ae5ebab3e2abe2a35&query={query}&resources=game&field_list=name,api_detail_url").Result;
+            var response = client.GetAsync($"?api_key={_giantBombConfiguration.Value.GiantBombAPIKey}&query={query}&resources=game&field_list=name,api_detail_url").Result;
 
             XmlSerializer xs = new XmlSerializer(typeof(Response));
 
