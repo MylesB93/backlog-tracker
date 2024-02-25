@@ -20,21 +20,27 @@
 
 @if (Model.GamesResponse != null)
 {
-	foreach (var game in Model.GamesResponse.Games)
-	{
-		<div class="card" style="width:18rem;margin-bottom:1rem">
-			<div class="card-body">
-				<h5 class="card-title">
-					<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
-				</h5>
-				@if (!string.IsNullOrEmpty(game.Description))
-				{
-					<div style="height:250px;overflow:hidden;margin-bottom:10px;">
-						<p class="card-text">@(new HtmlString(game.Description))</p>
+	<div class="container">
+		<div class="row row-cols-2">
+			@for (int i = 0; i < Model.GamesResponse.Games.Count; i++)
+			{
+				var game = Model.GamesResponse.Games[i];
+
+				<div class="card col" style="width:18rem;margin-bottom:1rem">
+					<div class="card-body">
+						<h5 class="card-title">
+							<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
+						</h5>
+						@if (!string.IsNullOrEmpty(game.Description))
+						{
+							<div style="height:250px;overflow:hidden;margin-bottom:10px;">
+								<p class="card-text">@(new HtmlString(game.Description))</p>
+							</div>
+						}
+						<a class="btn btn-primary">+</a>
 					</div>
-				}				
-				<a class="btn btn-primary">+</a>
-			</div>
+				</div>
+			}
 		</div>
-	}
+	</div>
 }
