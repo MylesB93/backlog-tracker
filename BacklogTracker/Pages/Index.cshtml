@@ -27,9 +27,12 @@
 				<h5 class="card-title">
 					<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
 				</h5>
-				<div style="height:250px;overflow:hidden;margin-bottom:10px;">
-					<p class="card-text">@(new HtmlString(game.Description))</p>
-				</div>
+				@if (!string.IsNullOrEmpty(game.Description))
+				{
+					<div style="height:250px;overflow:hidden;margin-bottom:10px;">
+						<p class="card-text">@(new HtmlString(game.Description))</p>
+					</div>
+				}				
 				<a class="btn btn-primary">+</a>
 			</div>
 		</div>
