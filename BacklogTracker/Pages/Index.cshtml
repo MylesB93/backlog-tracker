@@ -20,13 +20,12 @@
 
 @if (Model.GamesResponse != null)
 {
-	<div class="container">
-		<div class="row row-cols-2">
-			@for (int i = 0; i < Model.GamesResponse.Games.Count; i++)
-			{
-				var game = Model.GamesResponse.Games[i];
-
-				<div class="card col" style="width:18rem;margin-bottom:1rem">
+	<div class="row row-cols-4">
+		@for (int i = 0; i < Model.GamesResponse.Games.Count; i++)
+		{
+			var game = Model.GamesResponse.Games[i];
+			<div class="col">
+				<div class="card game-card">
 					<div class="card-body">
 						<h5 class="card-title">
 							<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
@@ -40,7 +39,7 @@
 						<a class="btn btn-primary">+</a>
 					</div>
 				</div>
-			}
-		</div>
+			</div>
+		}
 	</div>
 }
