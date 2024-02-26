@@ -25,7 +25,7 @@
 		{
 			var game = Model.GamesResponse.Games[i];
 			<div class="col">
-				<div class="card game-card">
+				<div class="card game-card" data-game-guid="@game.Guid">
 					<div class="card-body">
 						<h5 class="card-title">
 							<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
