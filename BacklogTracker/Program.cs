@@ -26,7 +26,10 @@ namespace BacklogTracker
                 .AddUserSecrets<Program>()
                 .Build();
             builder.Services.Configure<GiantBombConfiguration>(GiantBombConfiguration.GetSection("GiantBombConfiguration"));
-            
+
+            builder.Services.AddControllers()
+                .AddNewtonsoftJson();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -49,6 +52,8 @@ namespace BacklogTracker
             app.UseAuthorization();
 
             app.MapRazorPages();
+
+            app.MapControllers();
 
             app.Run();
         }
