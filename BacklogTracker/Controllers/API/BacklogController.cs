@@ -39,6 +39,11 @@ namespace BacklogTracker.Controllers.API
                 return NotFound();
             }
 
+            if (user.GameIDs == null)
+            {
+                user.GameIDs = new List<string>();
+            }
+
             user.GameIDs?.Add(userDto.GameID);
             _dbContext.SaveChanges();
 
