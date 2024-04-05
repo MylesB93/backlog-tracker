@@ -24,7 +24,7 @@
 		@foreach (var game in Model.GamesResponse.Games)
 		{
 			<div class="col">
-				<div class="card game-card" data-game-guid="@game.Guid">
+				<div class="card game-card">
 					<div class="card-body">
 						<h5 class="card-title">
 							<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
@@ -35,7 +35,7 @@
 								<p class="card-text">@(new HtmlString(game.Description))</p>
 							</div>
 						}
-						<a class="btn btn-primary">+</a>
+						<a class="btn btn-primary" id="btn_@game.Guid" data-game-guid="@game.Guid" onclick="addToBacklog(this)">+</a>
 					</div>
 				</div>
 			</div>
