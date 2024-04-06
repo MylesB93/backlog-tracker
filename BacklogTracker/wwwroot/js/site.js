@@ -1,11 +1,11 @@
-﻿function addToBacklog(element) {
+﻿function addToBacklog(element, email) {
     //console.log(element.getAttribute("data-game-guid"));
 
     const apiUrl = '/api/backlog/patch-user-backlog';
 
-    // TODO: Define the data you want to send to the API endpoint
     const requestData = {
-        data: '{Email:"mylesbroomes@hotmail.co.uk", GameID: "321"}'
+        Email: email,
+        GameID: element.getAttribute("data-game-guid")
     };
 
     fetch(apiUrl, {
