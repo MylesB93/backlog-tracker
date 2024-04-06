@@ -3,6 +3,7 @@
 @model IndexModel
 @{
 	ViewData["Title"] = "Home page";
+	var user = Model.User.Identity;
 }
 
 <div class="text-center">
@@ -35,9 +36,9 @@
 								<p class="card-text">@(new HtmlString(game.Description))</p>
 							</div>
 						}
-						@if (Model.User.Identity.IsAuthenticated)
+						@if (user.IsAuthenticated)
 						{
-							<a class="btn btn-primary" id="btn_@game.Guid" data-game-guid="@game.Guid" onclick="addToBacklog(this,'@Model.User.Identity?.Name?.Trim()')">+</a>
+							<a class="btn btn-primary" id="btn_@game.Guid" data-game-guid="@game.Guid" onclick="addToBacklog(this,'@user?.Name?.Trim()')">+</a>
 						}
 					</div>
 				</div>
