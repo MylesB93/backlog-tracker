@@ -23,9 +23,10 @@
         })
         .then(data => {
             console.log('Data successfully sent to the API:', data);
+            element.innerHTML = "-";
         })
         .catch(error => {
             console.error('There was a problem sending data to the API:', error);
-        });
+        });        
 
 }

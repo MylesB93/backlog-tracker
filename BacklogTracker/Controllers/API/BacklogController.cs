@@ -48,13 +48,13 @@ namespace BacklogTracker.Controllers.API
 
 			if (gameIDs.Contains(userDto.GameID))
 			{
-				return BadRequest("GameID already exists in the user's backlog.");
+				return BadRequest(new { ErrorMessage = "GameID already exists in the user's backlog." });
 			}
 
 			gameIDs?.Add(userDto.GameID);
             _dbContext.SaveChanges();
 
-            return Ok("Data saved successfully.");
+            return Ok(new { Message = "Data saved successfully." });
         }
     }
 }
