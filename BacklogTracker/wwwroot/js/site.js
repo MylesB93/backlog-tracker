@@ -1,7 +1,7 @@
 ﻿function addToBacklog(element, email) {
     //console.log(element.getAttribute("data-game-guid"));
 
-    const apiUrl = '/api/backlog/patch-user-backlog';
+    const apiUrl = '/api/backlog/add-game-to-backlog';
 
     const requestData = {
         Email: email,
