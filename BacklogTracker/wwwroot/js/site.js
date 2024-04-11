@@ -1,6 +1,4 @@
 ﻿function addToBacklog(element, email) {
-    //console.log(element.getAttribute("data-game-guid"));
-
     const apiUrl = '/api/backlog/add-game-to-backlog';
 
     const requestData = {
@@ -16,17 +14,23 @@
         body: JSON.stringify(requestData)
     })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
+            if (response.ok)
+                return response.json();
+            else if (response.status === 409)
+                return response.json().then(data => {
+                    throw new Error(data.errorMessage);
+                });
+            else
+                throw new Error('Network response was not ok.')
         })
         .then(data => {
             console.log('Data successfully sent to the API:', data);
-            element.innerHTML = "-";
         })
         .catch(error => {
+            var errorMsg = document.getElementById("errorMessage");
             console.error('There was a problem sending data to the API:', error);
+            errorMsg.innerHTML = error;
+            errorMsg.style.visibility = 'visible';
         });        
 
 }
