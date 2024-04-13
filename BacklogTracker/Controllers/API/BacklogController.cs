@@ -1,5 +1,6 @@
 ﻿using BacklogTracker.Data;
 using BacklogTracker.Data.DTOs;
+using BacklogTracker.Models.UserBacklog;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BacklogTracker.Controllers.API
@@ -79,5 +80,26 @@ namespace BacklogTracker.Controllers.API
 
 			return BadRequest(new { Message = "Game does not exist in user's backlog." });
 		}
+
+		//[HttpGet("get-users-games")]
+		//public IActionResult GetUsersBacklog(string email)
+		//{
+		//	if (!string.IsNullOrEmpty(email))
+		//	{
+		//		return BadRequest(new { ErrorMessage = "Invalid user!" });
+		//	}
+
+		//	var user = _dbContext.Users.Where(u => u.Email == email).FirstOrDefault();
+		//	if (user == null)
+		//	{
+		//		return BadRequest(new { ErrorMessage = "User not found." });
+		//	}
+
+		//	var gameList = new List<BacklogGame>();
+		//	foreach(var gameID in user.GameIDs)
+		//	{
+
+		//	}
+		//}
 	}
 }
