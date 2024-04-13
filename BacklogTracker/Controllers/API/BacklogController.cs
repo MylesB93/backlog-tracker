@@ -15,12 +15,6 @@ namespace BacklogTracker.Controllers.API
             _dbContext = dbContext; 
         }
 
-        [HttpGet]
-        public IActionResult GetTest()
-        {
-            return Ok("Great Success!");
-        }
-
         [HttpPatch("add-game-to-backlog")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
