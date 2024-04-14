@@ -1,4 +1,6 @@
 using BacklogTracker.Data;
+using BacklogTracker.Interfaces;
+using BacklogTracker.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +31,8 @@ namespace BacklogTracker
 
             builder.Services.AddControllers()
                 .AddNewtonsoftJson();
+
+            builder.Services.AddScoped<IGameService, GiantBombService>();
 
             var app = builder.Build();
 

@@ -4,6 +4,6 @@ namespace BacklogTracker.Interfaces
 {
 	public interface IGameService
 	{
-		Task<Response> GetGamesAsync();
+		Task<Response> GetGamesAsync(string? query);
 	}
 }

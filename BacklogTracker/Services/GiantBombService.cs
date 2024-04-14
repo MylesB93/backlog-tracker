@@ -11,17 +11,15 @@ namespace BacklogTracker.Services
 		private readonly ILogger<GiantBombService> _logger;
 		private IOptions<GiantBombConfiguration> _giantBombConfiguration;
 
-		public Response GamesResponse { get; set; }
-
 		public GiantBombService(ILogger<GiantBombService> logger, IOptions<GiantBombConfiguration> giantBombConfiguration) 
 		{ 
 			_logger = logger;
 			_giantBombConfiguration = giantBombConfiguration;
 		}
 
-		public Task<Response> GetGamesAsync()
+		public async Task<Response> GetGamesAsync(string? query)
 		{
-			var query = ""; //TODO: Get correct query
+			var gamesResponse = new Response();
 
 			using var client = new HttpClient();
 			client.BaseAddress = new Uri("https://www.giantbomb.com/api/search/");
@@ -33,13 +31,20 @@ namespace BacklogTracker.Services
 
 			using (StreamReader reader = new StreamReader(response.Content.ReadAsStreamAsync().Result))
 			{
-				GamesResponse = (Response)xs.Deserialize(reader);
-				_logger.LogInformation("Deserialization complete!");
+				try
+				{
+					gamesResponse = (Response)xs.Deserialize(reader);
+					_logger.LogInformation("Deserialization complete!");
+				}
+				catch (Exception ex)
+				{
+					_logger.LogError("Error occurred during deserialization: {0}", ex.Message);
+				}				
 			}
 
 			_logger.LogInformation("Request complete!");
 
-			return Task.FromResult(0);
+			return gamesResponse;
 		}
 	}
 }

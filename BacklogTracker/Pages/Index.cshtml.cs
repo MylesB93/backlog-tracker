@@ -1,3 +1,4 @@
+using BacklogTracker.Interfaces;
 using BacklogTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,18 +9,18 @@ namespace BacklogTracker.Pages
 {
     public class IndexModel : PageModel
     {
+        private readonly IGameService _gameService;
         private readonly ILogger<IndexModel> _logger;
-        private IOptions<GiantBombConfiguration> _giantBombConfiguration;
 
         [BindProperty(SupportsGet = true)]
         public string SearchTerm { get; set; }
 
         public Response GamesResponse { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger, IOptions<GiantBombConfiguration> giantBombConfiguration)
+        public IndexModel(IGameService gameService, ILogger<IndexModel> logger)
         {
+            _gameService = gameService;
             _logger = logger;
-            _giantBombConfiguration = giantBombConfiguration;
         }
 
         public void OnGet()
@@ -27,26 +28,22 @@ namespace BacklogTracker.Pages
 
         }
 
-        public void OnPost()
+        public async void OnPost()
         {
-            var query = Request.Form["query"];
+            string? query = Request.Form["query"];
 
-            using var client = new HttpClient();
-            client.BaseAddress = new Uri("https://www.giantbomb.com/api/search/");
-            client.DefaultRequestHeaders.Add("User-Agent", "Backlog Tracker app");
-            // Get data response
-            var response = client.GetAsync($"?api_key={_giantBombConfiguration.Value.GiantBombAPIKey}&query={query}&resources=game&field_list=name,site_detail_url,description,guid").Result;
-
-            XmlSerializer xs = new XmlSerializer(typeof(Response));
-
-            using (StreamReader reader = new StreamReader(response.Content.ReadAsStreamAsync().Result))
-            {
-                GamesResponse = (Response)xs.Deserialize(reader);
-                _logger.LogInformation("Deserialization complete!");
-            }
-
-            _logger.LogInformation("Request complete!");
-        }
+            if (!string.IsNullOrEmpty(query))
+            { 
+                try
+                {
+					GamesResponse = await _gameService.GetGamesAsync(Request.Form["query"]);
+				}
+                catch (Exception ex)
+                {
+					_logger.LogError(ex, "Error occurred while fetching games.");
+				}
+			}
+		}
     }
     public class Serializer
     {
