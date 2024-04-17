@@ -96,10 +96,17 @@ namespace BacklogTracker.Controllers.API
 		//	}
 
 		//	var gameList = new List<BacklogGame>();
-		//	foreach(var gameID in user.GameIDs)
+		//	if (user.GameIDs != null && user.GameIDs.Any()) 
 		//	{
-
-		//	}
+  //              foreach (var gameID in user.GameIDs)
+  //              {
+		//			gameList.Add(new BacklogGame()
+		//			{
+		//				Name = 
+		//			});
+  //              }
+  //          }
+			
 		//}
 	}
 }
