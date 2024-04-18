@@ -1,6 +1,7 @@
 ﻿using BacklogTracker.Data;
 using BacklogTracker.Data.DTOs;
 using BacklogTracker.Interfaces;
+using BacklogTracker.Models.UserBacklog;
 
 namespace BacklogTracker.Services
 {
@@ -61,6 +62,19 @@ namespace BacklogTracker.Services
                 gameIDs.Remove(userDto.GameID);
                 _dbContext.SaveChanges();
             }
+        }
+
+        public List<string> GetBacklog(string email)
+        {
+            var user = _dbContext.Users.Where(u => u.Email == email).FirstOrDefault();
+            if (user == null)
+            {
+                throw new ArgumentException("User not found.");
+            }
+
+            var backlog = user.GameIDs;
+
+            return backlog;
         }
     }
 }

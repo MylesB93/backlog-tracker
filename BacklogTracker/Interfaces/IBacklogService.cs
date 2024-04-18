@@ -1,4 +1,5 @@
 ﻿using BacklogTracker.Data.DTOs;
+using BacklogTracker.Models.UserBacklog;
 
 namespace BacklogTracker.Interfaces
 {
@@ -6,5 +7,6 @@ namespace BacklogTracker.Interfaces
     {
         void AddToBacklog(UserDto userDto);
         void RemoveFromBacklog(UserDto userDto);
+        List<string> GetBacklog(string email);
     }
 }
