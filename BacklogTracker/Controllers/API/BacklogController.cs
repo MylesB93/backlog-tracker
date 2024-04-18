@@ -1,5 +1,6 @@
 ﻿using BacklogTracker.Data;
 using BacklogTracker.Data.DTOs;
+using BacklogTracker.Interfaces;
 using BacklogTracker.Models.UserBacklog;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +11,12 @@ namespace BacklogTracker.Controllers.API
     public class BacklogController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
+		private readonly IBacklogService _backlogService;
 
-        public BacklogController(ApplicationDbContext dbContext)
+        public BacklogController(ApplicationDbContext dbContext, IBacklogService backlogService)
         { 
             _dbContext = dbContext; 
+			_backlogService = backlogService;
         }
 
         [HttpPatch("add-game-to-backlog")]
@@ -22,33 +25,19 @@ namespace BacklogTracker.Controllers.API
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult AddToBacklog([FromBody] UserDto userDto)
         {
-            if (string.IsNullOrEmpty(userDto.GameID) || string.IsNullOrEmpty(userDto.Email))
-            {
-                return BadRequest();
-            }
-
-            var user = _dbContext.Users.Where(u => u.Email == userDto.Email).FirstOrDefault();
-            if (user == null)
-            {
-				return BadRequest(new { ErrorMessage = "User not found." });
-			}
-
-			var gameIDs = user.GameIDs;
-
-			if (gameIDs == null)
-            {
-                gameIDs = new List<string>();
-            }
-
-			if (gameIDs.Contains(userDto.GameID))
+			try
 			{
-				return Conflict(new { ErrorMessage = "GameID already exists in the user's backlog." });
+				_backlogService.AddToBacklog(userDto);
+                return Ok(new { Message = "Data saved successfully." });
+            }
+			catch(ArgumentException ex)
+			{
+				return BadRequest(new { ErrorMessage = ex.Message });
 			}
-
-			gameIDs.Add(userDto.GameID);
-            _dbContext.SaveChanges();
-
-            return Ok(new { Message = "Data saved successfully." });
+			catch (Exception ex)
+			{
+                return StatusCode(500, "An error occurred while processing the request.");
+            }            
         }
 
 		[HttpPatch("remove-game-from-backlog")]
@@ -57,28 +46,19 @@ namespace BacklogTracker.Controllers.API
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public IActionResult RemoveFromBacklog([FromBody] UserDto userDto)
 		{
-			if (string.IsNullOrEmpty(userDto.GameID) || string.IsNullOrEmpty(userDto.Email))
+			try
 			{
-				return BadRequest();
-			}
-
-			var user = _dbContext.Users.Where(u => u.Email == userDto.Email).FirstOrDefault();
-			if (user == null)
+				_backlogService.RemoveFromBacklog(userDto);
+                return Ok(new { Message = "Data saved successfully." });
+            }
+			catch(ArgumentException ex)
 			{
-				return BadRequest(new { ErrorMessage = "User not found." });
-			}
-
-			var gameIDs = user.GameIDs;
-
-			if (gameIDs != null && gameIDs.Contains(userDto.GameID))
+                return BadRequest(new { ErrorMessage = ex.Message });
+            }
+			catch(Exception ex)
 			{
-				gameIDs.Remove(userDto.GameID);
-				_dbContext.SaveChanges();
-
-				return Ok(new { Message = "Data saved successfully." });
-			}
-
-			return BadRequest(new { Message = "Game does not exist in user's backlog." });
+                return StatusCode(500, "An error occurred while processing the request.");
+            }
 		}
 
 		//[HttpGet("get-users-games")]

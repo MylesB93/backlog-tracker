@@ -33,6 +33,7 @@ namespace BacklogTracker
                 .AddNewtonsoftJson();
 
             builder.Services.AddScoped<IGameService, GiantBombService>();
+            builder.Services.AddScoped<IBacklogService, BacklogService>();
 
             var app = builder.Build();
 
