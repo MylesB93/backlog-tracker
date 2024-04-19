@@ -48,9 +48,9 @@ namespace BacklogTracker.Services
 			return gamesResponse;
 		}
 
-		public async Task<List<BacklogGame>> GetUsersGamesAsync(List<string> gameIds)
+		public async Task<List<Response>> GetUsersGamesAsync(List<string> gameIds)
 		{
-			var gamesList = new List<BacklogGame>();
+			var gamesList = new List<Response>();
 
 			using var client = new HttpClient();
 
@@ -67,7 +67,7 @@ namespace BacklogTracker.Services
 				{
 					try
 					{
-						gamesList.Add((BacklogGame)xs.Deserialize(reader));
+						gamesList.Add((Response)xs.Deserialize(reader));
 						_logger.LogInformation("Deserialization complete!");
 					}
 					catch (Exception ex)

@@ -64,7 +64,7 @@ namespace BacklogTracker.Services
             }
         }
 
-        public List<string> GetBacklog(string email)
+        public List<string>? GetBacklog(string email)
         {
             var user = _dbContext.Users.Where(u => u.Email == email).FirstOrDefault();
             if (user == null)

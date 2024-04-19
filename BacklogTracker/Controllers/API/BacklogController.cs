@@ -61,32 +61,18 @@ namespace BacklogTracker.Controllers.API
             }
 		}
 
-		//[HttpGet("get-users-games")]
-		//public IActionResult GetUsersBacklog(string email)
-		//{
-		//	if (!string.IsNullOrEmpty(email))
-		//	{
-		//		return BadRequest(new { ErrorMessage = "Invalid user!" });
-		//	}
-
-		//	var user = _dbContext.Users.Where(u => u.Email == email).FirstOrDefault();
-		//	if (user == null)
-		//	{
-		//		return BadRequest(new { ErrorMessage = "User not found." });
-		//	}
-
-		//	var gameList = new List<BacklogGame>();
-		//	if (user.GameIDs != null && user.GameIDs.Any()) 
-		//	{
-  //              foreach (var gameID in user.GameIDs)
-  //              {
-		//			gameList.Add(new BacklogGame()
-		//			{
-		//				Name = 
-		//			});
-  //              }
-  //          }
-			
-		//}
+		[HttpGet("get-users-games")]
+		public IActionResult GetUsersBacklog(string email)
+		{
+			try
+			{
+				var gameIds = _backlogService.GetBacklog(email) ?? new List<string>();
+				return Ok(gameIds);
+			}
+			catch(Exception ex)
+			{
+				return BadRequest(new {ErrorMessage =  ex.Message});
+			}
+		}
 	}
 }
