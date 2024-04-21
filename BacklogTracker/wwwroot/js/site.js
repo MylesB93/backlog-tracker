@@ -3,7 +3,7 @@
 
     const requestData = {
         Email: email,
-        GameID: element.getAttribute("data-game-guid")
+        GameID: element.getAttribute("data-game-id")
     };
 
     fetch(apiUrl, {

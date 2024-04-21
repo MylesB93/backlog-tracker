@@ -26,7 +26,7 @@ namespace BacklogTracker.Services
 			client.BaseAddress = new Uri("https://www.giantbomb.com/api/search/");
 			client.DefaultRequestHeaders.Add("User-Agent", "Backlog Tracker app");
 
-			var response = client.GetAsync($"?api_key={_giantBombConfiguration.Value.GiantBombAPIKey}&query={query}&resources=game&field_list=name,site_detail_url,description,guid").Result;
+			var response = client.GetAsync($"?api_key={_giantBombConfiguration.Value.GiantBombAPIKey}&query={query}&resources=game&field_list=name,site_detail_url,description,guid,id").Result;
 
 			XmlSerializer xs = new XmlSerializer(typeof(Response));
 

@@ -18,5 +18,8 @@ namespace BacklogTracker.Models
 
         [XmlElement("guid")]
         public string Guid { get; set; }
+
+        [XmlElement("id")]
+        public string Id { get; set; }
     }
 }
