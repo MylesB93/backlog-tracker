@@ -19,7 +19,7 @@ namespace BacklogTracker.Areas.Identity.Pages.Account.Manage
             _gameService = gameService;
             _backlogService = backlogService;
         }
-        public async void OnGet()
+        public async Task OnGet()
         {
             var email = User?.Identity?.Name;
 
@@ -27,7 +27,7 @@ namespace BacklogTracker.Areas.Identity.Pages.Account.Manage
             var gameIds = email != null ? _backlogService.GetBacklog(email) : new List<string>();
             
             // User that list to get list of BacklogGame from game service
-            Backlog = gameIds != null ? await _gameService.GetUsersGamesAsync(gameIds) : new Response();
+            Backlog = await _gameService.GetUsersGamesAsync(gameIds);
         }
     }
 }
