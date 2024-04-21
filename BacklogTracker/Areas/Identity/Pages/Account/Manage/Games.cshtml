@@ -1,8 +1,10 @@
 ﻿@page
 @model GamesModel
 @{
-    ViewData["Title"] = "Games";
-    ViewData["ActivePage"] = ManageNavPages.Games;
+	ViewData["Title"] = "Games";
+	ViewData["ActivePage"] = ManageNavPages.Games;
+
+	var games = Model.Backlog?.Games;
 }
 
 <h3>@ViewData["Title"]</h3>
@@ -10,5 +12,17 @@
 
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+	<partial name="_ValidationScriptsPartial" />
 }
+
+<div>
+	<ul>
+		@if (games != null && games.Any())
+		{
+			@foreach (var game in games)
+			{
+				<li>@game.Name</li>
+			}
+		}
+	</ul>
+</div>

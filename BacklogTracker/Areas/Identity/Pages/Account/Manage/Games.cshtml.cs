@@ -12,7 +12,7 @@ namespace BacklogTracker.Areas.Identity.Pages.Account.Manage
         private readonly IGameService _gameService;
         private readonly IBacklogService _backlogService;
 
-        public List<Response> Backlog { get; set; }
+        public Response Backlog { get; set; }
 
         public GamesModel(IGameService gameService, IBacklogService backlogService) 
         {
@@ -24,10 +24,10 @@ namespace BacklogTracker.Areas.Identity.Pages.Account.Manage
             var email = User?.Identity?.Name;
 
             // Get list of user's backlog game ID's from backlog service
-            var gameIds = email != null ? _backlogService.GetBacklog(email) : new List<string>();          
-
+            var gameIds = email != null ? _backlogService.GetBacklog(email) : new List<string>();
+            
             // User that list to get list of BacklogGame from game service
-            // TODO: Backlog = gameIds != null ? await _gameService.GetUsersGamesAsync(gameIds) : new List<Response>();
+            Backlog = gameIds != null ? await _gameService.GetUsersGamesAsync(gameIds) : new Response();
         }
     }
 }
