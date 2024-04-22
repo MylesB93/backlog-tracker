@@ -9,7 +9,7 @@
 }
 
 <h3>@ViewData["Title"]</h3>
-@* <partial name="_StatusMessage" for="StatusMessage" /> *@
+<div style="visibility:hidden;" id="errorMessage"></div>
 
 
 @section Scripts {
@@ -23,8 +23,8 @@
 			@foreach (var game in games)
 			{
 				<li>
-					<button type="button" class="btn btn-danger" onclick="removeFromBacklog(this,'@user?.Name?.Trim()')")>X</button>
-					<a href="@game.SiteDetailUrl" target="_blank" data-game-id="@game.Id">@game.Name</a>
+					<button type="button" class="btn btn-danger" data-game-id="@game.Id" onclick="removeFromBacklog(this,'@user?.Name?.Trim()')" )>X</button>
+					<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
 				</li>
 			}
 		}
