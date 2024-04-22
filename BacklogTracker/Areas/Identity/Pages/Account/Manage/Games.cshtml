@@ -5,6 +5,7 @@
 	ViewData["ActivePage"] = ManageNavPages.Games;
 
 	var games = Model.Backlog?.Games;
+	var user = Model.User.Identity;
 }
 
 <h3>@ViewData["Title"]</h3>
@@ -16,12 +17,15 @@
 }
 
 <div>
-	<ul>
+	<ul class="games-list">
 		@if (games != null && games.Any())
 		{
 			@foreach (var game in games)
 			{
-				<li><a href="@game.SiteDetailUrl" target="_blank">@game.Name</a></li>
+				<li>
+					<button type="button" class="btn btn-danger" onclick="removeFromBacklog(this,'@user?.Name?.Trim()')")>X</button>
+					<a href="@game.SiteDetailUrl" target="_blank" data-game-id="@game.Id">@game.Name</a>
+				</li>
 			}
 		}
 	</ul>
