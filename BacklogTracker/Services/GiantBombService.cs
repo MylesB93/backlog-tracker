@@ -20,7 +20,7 @@ namespace BacklogTracker.Services
 
         public async Task<Response> GetGamesAsync(string? query)
         {
-            var gamesResponse = new Response();
+            var games = new Response();
 
             using var client = new HttpClient();
             client.BaseAddress = new Uri("https://www.giantbomb.com/api/search/");
@@ -34,7 +34,7 @@ namespace BacklogTracker.Services
             {
                 try
                 {
-                    gamesResponse = (Response)xs.Deserialize(reader);
+                    games = (Response)xs.Deserialize(reader);
                     _logger.LogInformation("Deserialization complete!");
                 }
                 catch (Exception ex)
@@ -45,10 +45,9 @@ namespace BacklogTracker.Services
 
             _logger.LogInformation("Request complete!");
 
-            return gamesResponse;
+            return games;
         }
 
-        //TODO: Fix repeated code in both methods
         public async Task<Response> GetUsersGamesAsync(List<string> gameIds)
         {
             var gamesList = new Response();

@@ -23,7 +23,7 @@ namespace BacklogTracker.Services
             var user = _dbContext.Users.Where(u => u.Email == userDto.Email).FirstOrDefault();
             if (user == null)
             {
-                throw new ArgumentException( "User not found.");
+                throw new ArgumentException("User not found.");
             }
 
             var gameIDs = user.GameIDs;
@@ -76,5 +76,7 @@ namespace BacklogTracker.Services
 
             return backlog;
         }
+
+
     }
 }
