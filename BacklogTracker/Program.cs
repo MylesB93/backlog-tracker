@@ -3,6 +3,7 @@ using BacklogTracker.Interfaces;
 using BacklogTracker.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 
 namespace BacklogTracker
 {
@@ -35,7 +36,13 @@ namespace BacklogTracker
             builder.Services.AddScoped<IGameService, GiantBombService>();
             builder.Services.AddScoped<IBacklogService, BacklogService>();
 
-            var app = builder.Build();
+			builder.Services.AddHttpClient("GiantBomb", httpClient =>
+			{
+				httpClient.BaseAddress = new Uri("https://www.giantbomb.com/");
+				httpClient.DefaultRequestHeaders.Add("User-Agent", "Backlog Tracker app");
+			});
+
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

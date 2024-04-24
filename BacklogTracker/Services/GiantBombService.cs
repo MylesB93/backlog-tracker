@@ -11,22 +11,22 @@ namespace BacklogTracker.Services
     {
         private readonly ILogger<GiantBombService> _logger;
         private IOptions<GiantBombConfiguration> _giantBombConfiguration;
+		private readonly IHttpClientFactory _httpClientFactory;
 
-        public GiantBombService(ILogger<GiantBombService> logger, IOptions<GiantBombConfiguration> giantBombConfiguration)
+		public GiantBombService(ILogger<GiantBombService> logger, IOptions<GiantBombConfiguration> giantBombConfiguration, IHttpClientFactory httpClientFactory)
         {
             _logger = logger;
             _giantBombConfiguration = giantBombConfiguration;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<Response> GetGamesAsync(string? query)
         {
             var games = new Response();
 
-            using var client = new HttpClient();
-            client.BaseAddress = new Uri("https://www.giantbomb.com/api/search/");
-            client.DefaultRequestHeaders.Add("User-Agent", "Backlog Tracker app");
+            var client = _httpClientFactory.CreateClient("GiantBomb");
 
-            var response = client.GetAsync($"?api_key={_giantBombConfiguration.Value.GiantBombAPIKey}&query={query}&resources=game&field_list=name,site_detail_url,description,guid,id").Result;
+            var response = client.GetAsync($"/api/search/?api_key={_giantBombConfiguration.Value.GiantBombAPIKey}&query={query}&resources=game&field_list=name,site_detail_url,description,guid,id").Result;
 
             XmlSerializer xs = new XmlSerializer(typeof(Response));
 
@@ -52,12 +52,9 @@ namespace BacklogTracker.Services
         {
             var gamesList = new Response();
 
-            using var client = new HttpClient();
+            var client = _httpClientFactory.CreateClient("GiantBomb");
 
-            client.BaseAddress = new Uri($"https://www.giantbomb.com/api/games/");
-            client.DefaultRequestHeaders.Add("User-Agent", "Backlog Tracker app");
-
-            var response = await client.GetAsync($"?api_key={_giantBombConfiguration.Value.GiantBombAPIKey}&filter=id:{string.Join("|",gameIds)}&field_list=name,site_detail_url,description,guid,id");
+            var response = await client.GetAsync($"/api/games/?api_key={_giantBombConfiguration.Value.GiantBombAPIKey}&filter=id:{string.Join("|",gameIds)}&field_list=name,site_detail_url,description,guid,id");
 
             XmlSerializer xs = new XmlSerializer(typeof(Response));
 
