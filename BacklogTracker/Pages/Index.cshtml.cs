@@ -37,6 +37,7 @@ namespace BacklogTracker.Pages
                 try
                 {
 					GamesResponse = await _gameService.GetGamesAsync(Request.Form["query"]);
+                    ViewData["NoResults"] = GamesResponse == null ? "" : "No Games Matching The Query!";
 				}
                 catch (Exception ex)
                 {

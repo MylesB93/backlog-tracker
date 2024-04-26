@@ -47,4 +47,7 @@
 			</div>
 		}
 	</div>
+} else if (Model.GamesResponse == null && ViewData["NoResults"]?.ToString() != "") //TODO: Figure out why this isn't being hit
+{
+	<p>@ViewData["NoResults"]</p>
 }
