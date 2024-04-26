@@ -25,7 +25,7 @@ namespace BacklogTracker.Services
 
             var client = _httpClientFactory.CreateClient("GiantBomb");
 
-            var response = client.GetAsync($"/api/search/?api_key={_giantBombConfiguration.Value.GiantBombAPIKey}&query={query}&resources=game&field_list=name,site_detail_url,description,guid,id").Result;
+            var response = client.GetAsync($"/api/search/?api_key={_giantBombConfiguration.Value.GiantBombAPIKey}&query={query}&resources=game&field_list=name,site_detail_url,description,id").Result;
 
             XmlSerializer xs = new XmlSerializer(typeof(Response));
 
