@@ -1,6 +1,5 @@
 using BacklogTracker.Interfaces;
 using BacklogTracker.Models;
-using BacklogTracker.Models.UserBacklog;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;

@@ -1,5 +1,4 @@
 ﻿using BacklogTracker.Models;
-using BacklogTracker.Models.UserBacklog;
 
 namespace BacklogTracker.Interfaces
 {

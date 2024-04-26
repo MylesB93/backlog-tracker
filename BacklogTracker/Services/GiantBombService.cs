@@ -3,7 +3,6 @@ using BacklogTracker.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Options;
-using BacklogTracker.Models.UserBacklog;
 
 namespace BacklogTracker.Services
 {

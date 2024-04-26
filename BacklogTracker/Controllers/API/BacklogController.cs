@@ -1,7 +1,6 @@
 ﻿using BacklogTracker.Data;
 using BacklogTracker.Data.DTOs;
 using BacklogTracker.Interfaces;
-using BacklogTracker.Models.UserBacklog;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BacklogTracker.Controllers.API

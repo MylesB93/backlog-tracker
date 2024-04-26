@@ -1,5 +1,4 @@
 ﻿using BacklogTracker.Data.DTOs;
-using BacklogTracker.Models.UserBacklog;
 
 namespace BacklogTracker.Interfaces
 {

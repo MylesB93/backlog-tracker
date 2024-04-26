@@ -1,7 +1,6 @@
 ﻿using BacklogTracker.Data;
 using BacklogTracker.Data.DTOs;
 using BacklogTracker.Interfaces;
-using BacklogTracker.Models.UserBacklog;
 
 namespace BacklogTracker.Services
 {
