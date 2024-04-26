@@ -10,7 +10,7 @@
 	<h1 class="display-4">Backlog Tracker</h1>
 </div>
 
-<div style="visibility:hidden;" id="errorMessage"></div>
+<div id="errorMessage"></div>
 
 <form method="post" style="margin-bottom:1rem">
 	<div class="input-group">
@@ -34,7 +34,7 @@
 						</h5>
 						@if (!string.IsNullOrEmpty(game.Description))
 						{
-							<div style="height:250px;overflow:hidden;margin-bottom:10px;">
+							<div class="card-text-container">
 								<p class="card-text">@(new HtmlString(game.Description))</p>
 							</div>
 						}
