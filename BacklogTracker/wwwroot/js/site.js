@@ -25,6 +25,7 @@
         })
         .then(data => {
             console.log('Data successfully sent to the API:', data);
+            alert(element.getAttribute("data-game-name") + " successfully added to backlog!");
         })
         .catch(error => {
             var errorMsg = document.getElementById("errorMessage");
