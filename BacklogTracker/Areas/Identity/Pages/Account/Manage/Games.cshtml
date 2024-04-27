@@ -17,9 +17,11 @@
 }
 
 <div>
-	<ul class="games-list">
-		@if (games != null && games.Any())
-		{
+	@if (games != null && games.Any())
+	{
+
+		<ul class="games-list">
+
 			@foreach (var game in games)
 			{
 				<li>
@@ -27,6 +29,11 @@
 					<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
 				</li>
 			}
-		}
-	</ul>
+		</ul>
+
+	}
+	else
+	{
+		<p>It appears you haven't added any games to your backlog!</p>
+	}
 </div>
