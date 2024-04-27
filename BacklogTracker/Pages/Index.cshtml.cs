@@ -23,11 +23,6 @@ namespace BacklogTracker.Pages
             _logger = logger;
         }
 
-        public void OnGet()
-        {
-
-        }
-
         public async void OnPost()
         {
             string? query = Request.Form["query"];
