@@ -21,7 +21,7 @@
 	</div>
 </form>
 
-@if (Model.GamesResponse != null)
+@if (Model.GamesResponse != null && Model.GamesResponse.Games.Any())
 {
 	<div class="row row-cols-4">
 		@foreach (var game in Model.GamesResponse.Games)
@@ -47,7 +47,8 @@
 			</div>
 		}
 	</div>
-} else if (Model.GamesResponse == null && ViewData["NoResults"]?.ToString() != "") //TODO: Figure out why this isn't being hit
+}
+else if (Model.GamesResponse != null && !Model.GamesResponse.Games.Any())
 {
 	<p>@ViewData["NoResults"]</p>
 }
