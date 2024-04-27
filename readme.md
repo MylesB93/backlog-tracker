@@ -52,6 +52,3 @@ Games:
 Homepage:
 - Index.cshtml: Contains search bar where user's can search for games
 - Index.cshtml.cs: OnPost() method that is passed a string from the search bar, then calls the GetGamesAsync() method from the game service to get information from the GiantBomb API based on that string. The page is then updated to display this information
-
-
-GitHub Repository - https://github.com/MylesB93/backlog-tracker
