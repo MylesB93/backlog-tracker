@@ -75,7 +75,5 @@ namespace BacklogTracker.Services
 
             return backlog;
         }
-
-
     }
 }
