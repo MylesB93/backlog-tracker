@@ -17,6 +17,6 @@ public class BacklogUpdateTests
 
         var backlog = backlogService.GetBacklog(expectedUser.Email);
 
-        //Assert.Contains(backlog, new List<string>() { "1234", "5678", "9012" });
-    }
+		Assert.All(new List<string>() { "1234", "5678", "9012" }, item => Assert.Contains(item, backlog));
+	}
 }
