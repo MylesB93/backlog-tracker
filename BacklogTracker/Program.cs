@@ -1,5 +1,6 @@
 using BacklogTracker.Data;
 using BacklogTracker.Interfaces;
+using BacklogTracker.Repositories;
 using BacklogTracker.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,7 @@ namespace BacklogTracker
 
             builder.Services.AddScoped<IGameService, GiantBombService>();
             builder.Services.AddScoped<IBacklogService, BacklogService>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 			builder.Services.AddHttpClient("GiantBomb", httpClient =>
 			{

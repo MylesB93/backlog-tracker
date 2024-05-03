@@ -7,9 +7,11 @@ namespace BacklogTracker.Services
     public class BacklogService : IBacklogService
     {
         private readonly ApplicationDbContext _dbContext;
-        public BacklogService(ApplicationDbContext dbContext)
+        private readonly IUserRepository _userRepository;
+        public BacklogService(ApplicationDbContext dbContext, IUserRepository userRepository)
         {
             _dbContext = dbContext;
+            _userRepository = userRepository;
         }
 
         public void AddToBacklog(UserDto userDto)
@@ -19,7 +21,7 @@ namespace BacklogTracker.Services
                 throw new ArgumentException("GameID and Email are required.");
             }
 
-            var user = _dbContext.Users.Where(u => u.Email == userDto.Email).FirstOrDefault();
+            var user = _userRepository.GetUser(userDto.Email);
             if (user == null)
             {
                 throw new ArgumentException("User not found.");
@@ -48,8 +50,8 @@ namespace BacklogTracker.Services
                 throw new ArgumentException("GameID and Email are required.");
             }
 
-            var user = _dbContext.Users.Where(u => u.Email == userDto.Email).FirstOrDefault();
-            if (user == null)
+            var user = _userRepository.GetUser(userDto.Email);
+			if (user == null)
             {
                 throw new ArgumentException("User not found.");
             }
@@ -65,8 +67,8 @@ namespace BacklogTracker.Services
 
         public List<string>? GetBacklog(string email)
         {
-            var user = _dbContext.Users.Where(u => u.Email == email).FirstOrDefault();
-            if (user == null)
+            var user = _userRepository.GetUser(email);
+			if (user == null)
             {
                 throw new ArgumentException("User not found.");
             }
