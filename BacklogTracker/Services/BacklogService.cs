@@ -7,7 +7,7 @@ namespace BacklogTracker.Services
     public class BacklogService : IBacklogService
     {
         private readonly IUserRepository _userRepository;
-        public BacklogService(ApplicationDbContext dbContext, IUserRepository userRepository)
+        public BacklogService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
