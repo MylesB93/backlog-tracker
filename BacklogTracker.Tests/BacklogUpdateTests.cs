@@ -12,5 +12,7 @@ public class BacklogUpdateTests
     {
         var mockUserRepo = new Mock<IUserRepository>();
         //var backlogService = new BacklogService(ApplicationDbContext dbContext) - move dbContext logic to user repository?
+
+        // mockUserRepo.Setup(x => x.AddToUsersBacklog("test")).R
 	}
 }

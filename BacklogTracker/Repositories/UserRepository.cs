@@ -11,9 +11,69 @@ namespace BacklogTracker.Repositories
 		{ 
 			_dbContext = dbContext;
 		}
-		public BacklogTrackerUser? GetUser(string email)
+		
+		public void AddToUsersBacklog(UserDto userDto)
 		{
-			return _dbContext.Users.Where(u => u.Email == email).FirstOrDefault();
+			if (string.IsNullOrEmpty(userDto.GameID) || string.IsNullOrEmpty(userDto.Email))
+			{
+				throw new ArgumentException("GameID and Email are required.");
+			}
+
+			var user = _dbContext.Users.FirstOrDefault(u => u.Email == userDto.Email);
+			if (user == null)
+			{
+				throw new ArgumentException("User not found.");
+			}
+
+			var gameIDs = user.GameIDs;
+
+			if (gameIDs == null)
+			{
+				gameIDs = new List<string>();
+			}
+
+			if (gameIDs.Contains(userDto.GameID))
+			{
+				throw new ArgumentException("GameID already exists in the user's backlog.");
+			}
+
+			gameIDs.Add(userDto.GameID);
+			_dbContext.SaveChanges();
+		}
+
+		public void RemoveFromUsersBacklog(UserDto userDto) 
+		{
+			if (string.IsNullOrEmpty(userDto.GameID) || string.IsNullOrEmpty(userDto.Email))
+			{
+				throw new ArgumentException("GameID and Email are required.");
+			}
+
+			var user = _dbContext.Users.FirstOrDefault(u => u.Email == userDto.Email);
+			if (user == null)
+			{
+				throw new ArgumentException("User not found.");
+			}
+
+			var gameIDs = user.GameIDs;
+
+			if (gameIDs != null && gameIDs.Contains(userDto.GameID))
+			{
+				gameIDs.Remove(userDto.GameID);
+				_dbContext.SaveChanges();
+			}
+		}
+
+		public List<string>? GetUsersBacklog(string email)
+		{
+			var user = _dbContext.Users.FirstOrDefault(u => u.Email == email);
+			if (user == null)
+			{
+				throw new ArgumentException("User not found.");
+			}
+
+			var backlog = user.GameIDs;
+
+			return backlog;
 		}
 	}
 }

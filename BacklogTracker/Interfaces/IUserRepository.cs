@@ -5,6 +5,8 @@ namespace BacklogTracker.Interfaces
 {
 	public interface IUserRepository
 	{
-		BacklogTrackerUser? GetUser(string email);
+		void AddToUsersBacklog(UserDto userDto);
+		void RemoveFromUsersBacklog(UserDto userDto);
+		List<string>? GetUsersBacklog(string email);
 	}
 }
