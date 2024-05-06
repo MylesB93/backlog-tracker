@@ -2,17 +2,12 @@ using BacklogTracker.Data;
 using BacklogTracker.Interfaces;
 using BacklogTracker.Services;
 using Moq;
+using BacklogTracker.Data.DTOs;
+using BacklogTracker.Repositories;
 
 namespace BacklogTracker.Tests;
 
 public class BacklogUpdateTests
 {
-    [Fact]
-    public void GetUsersBacklog_SingleUser_ReturnsAllIDsInBacklog()
-    {
-        var mockUserRepo = new Mock<IUserRepository>();
-        //var backlogService = new BacklogService(ApplicationDbContext dbContext) - move dbContext logic to user repository?
 
-        // mockUserRepo.Setup(x => x.AddToUsersBacklog("test")).R
-	}
 }
