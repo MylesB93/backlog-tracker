@@ -1,0 +1,12 @@
+﻿@page
+@using BacklogTracker.Areas.Users.Pages
+@model IndexModel
+@{
+}
+
+<ul>
+	@foreach(var user in Model.Users)
+	{
+		<li>@user</li>
+	}
+</ul>

@@ -75,5 +75,10 @@ namespace BacklogTracker.Repositories
 
 			return backlog;
 		}
+
+		public List<BacklogTrackerUser> GetAllUsers()
+		{
+			return _dbContext.Users.ToList();
+		}
 	}
 }
