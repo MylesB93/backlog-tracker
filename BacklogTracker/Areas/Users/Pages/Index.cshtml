@@ -7,6 +7,8 @@
 <ul>
 	@foreach(var user in Model.Users)
 	{
-		<li>@user</li>
+		<li data-user-itemid="@user.Id">
+			<a href="">@user.UserName</a>
+		</li>
 	}
 </ul>
