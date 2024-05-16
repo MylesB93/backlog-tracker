@@ -37,6 +37,7 @@ namespace BacklogTracker
             builder.Services.AddScoped<IGameService, GiantBombService>();
             builder.Services.AddScoped<IBacklogService, BacklogService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
 			builder.Services.AddHttpClient("GiantBomb", httpClient =>
 			{
