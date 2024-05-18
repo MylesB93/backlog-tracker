@@ -1,6 +1,15 @@
 ﻿@page
 @model BacklogTracker.Areas.Users.Pages.UserPageModel
 @{
+	var games = Model.GamesList;
 }
 
-<h1>HELLO!!!!</h1>
+<ul>
+	@if (games != null && games.Any())
+	{
+		foreach (var game in games)
+		{
+			<li>@game</li>
+		}
+	}
+</ul>

@@ -80,5 +80,10 @@ namespace BacklogTracker.Repositories
 		{
 			return _dbContext.Users.ToList();
 		}
+
+		public BacklogTrackerUser? GetUser(string? id)
+		{
+			return _dbContext.Users.Where(u => u.Id == id).FirstOrDefault();
+		}
 	}
 }

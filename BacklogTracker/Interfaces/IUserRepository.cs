@@ -9,5 +9,6 @@ namespace BacklogTracker.Interfaces
 		void RemoveFromUsersBacklog(UserDto userDto);
 		List<string>? GetUsersBacklog(string email);
 		List<BacklogTrackerUser> GetAllUsers();
+		BacklogTrackerUser? GetUser(string? id);
 	}
 }

@@ -15,5 +15,10 @@ namespace BacklogTracker.Services
 		{
 			return _userRepository.GetAllUsers();
 		}
+
+		public BacklogTrackerUser? GetUser(string? id)
+		{
+			return _userRepository.GetUser(id);
+		}
 	}
 }
