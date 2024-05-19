@@ -18,7 +18,7 @@ namespace BacklogTracker.Areas.Users.Pages
             _gameService = gameService;
         }
 
-        public async void OnGet()
+        public async Task OnGet()
         {
             var userId = Request.Query["userId"];
             BacklogTrackerUser? user = new BacklogTrackerUser();
