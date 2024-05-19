@@ -2,14 +2,22 @@
 @model BacklogTracker.Areas.Users.Pages.UserPageModel
 @{
 	var games = Model.GamesList;
+	var userName = Model.User.Identity?.Name ?? "User";
 }
 
-<ul>
-	@if (games != null && games.Any())
-	{
-		foreach (var game in games)
+@if (games != null && games.Any())
+{
+	<h1>@userName's backlog:</h1>
+	<ul>		
+		@foreach (var game in games)
 		{
-			<li>@game</li>
+			<li>
+				<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
+			</li>
 		}
-	}
-</ul>
+	</ul>
+}
+else
+{
+	<p>This user has not added any games to their backlog.</p>
+}

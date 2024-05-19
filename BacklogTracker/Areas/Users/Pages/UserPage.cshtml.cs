@@ -1,5 +1,6 @@
 using BacklogTracker.Data;
 using BacklogTracker.Interfaces;
+using BacklogTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -10,7 +11,7 @@ namespace BacklogTracker.Areas.Users.Pages
         private readonly IUserService _userService;
         private readonly IGameService _gameService;
 
-        public List<string>? GamesList { get; set; }
+        public List<Game>? GamesList { get; set; }
 
         public UserPageModel(IUserService userService, IGameService gameService) 
         { 
@@ -30,7 +31,7 @@ namespace BacklogTracker.Areas.Users.Pages
                 if (gameIds != null && gameIds.Any())
                 {
 					var userGamesList = await _gameService.GetUsersGamesAsync(gameIds);
-                    GamesList = userGamesList.Games.Select(g => g.Name).ToList();
+                    GamesList = userGamesList.Games.ToList();
 				}
 			}            
         }
