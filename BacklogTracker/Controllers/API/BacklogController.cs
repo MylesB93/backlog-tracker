@@ -1,5 +1,4 @@
-﻿using BacklogTracker.Data;
-using BacklogTracker.Data.DTOs;
+﻿using BacklogTracker.Data.DTOs;
 using BacklogTracker.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,12 +8,10 @@ namespace BacklogTracker.Controllers.API
     [Route("api/[controller]")]
     public class BacklogController : ControllerBase
     {
-        private readonly ApplicationDbContext _dbContext;
 		private readonly IBacklogService _backlogService;
 
-        public BacklogController(ApplicationDbContext dbContext, IBacklogService backlogService)
+        public BacklogController(IBacklogService backlogService)
         { 
-            _dbContext = dbContext; 
 			_backlogService = backlogService;
         }
 
@@ -72,6 +69,12 @@ namespace BacklogTracker.Controllers.API
 			{
 				return BadRequest(new {ErrorMessage =  ex.Message});
 			}
+		}
+
+		[HttpPatch]
+		public IActionResult AddToCompleted([FromBody] UserDto userDto)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

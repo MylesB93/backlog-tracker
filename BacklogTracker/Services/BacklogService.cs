@@ -26,5 +26,10 @@ namespace BacklogTracker.Services
         {
             return _userRepository.GetUsersBacklog(email);
         }
+
+        public void AddToCompleted(UserDto userDto) 
+        {
+            _userRepository.AddToCompleted(userDto);
+        }
     }
 }

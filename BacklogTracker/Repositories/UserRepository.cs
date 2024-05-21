@@ -85,5 +85,39 @@ namespace BacklogTracker.Repositories
 		{
 			return _dbContext.Users.Where(u => u.Id == id).FirstOrDefault();
 		}
+
+		public void AddToCompleted(UserDto userDto)
+		{
+			if (string.IsNullOrEmpty(userDto.GameID) || string.IsNullOrEmpty(userDto.Email))
+			{
+				throw new ArgumentException("GameID and Email are required.");
+			}
+
+			var user = _dbContext.Users.FirstOrDefault(u => u.Email == userDto.Email);
+			if (user == null)
+			{
+				throw new ArgumentException("User not found.");
+			}
+
+			var gameIDs = user.GameIDs;
+			var completedGameIDs = user.CompletedGameIDs;
+
+			if (gameIDs == null)
+			{
+				gameIDs = new List<string>();
+			}
+
+			if (completedGameIDs == null)
+			{
+				completedGameIDs = new List<string>();
+			}
+
+			if (gameIDs.Contains(userDto.GameID) && !completedGameIDs.Contains(userDto.GameID))
+			{
+				completedGameIDs.Add(userDto.GameID);
+				gameIDs.Remove(userDto.GameID);
+				_dbContext.SaveChanges();
+			}			
+		}
 	}
 }
