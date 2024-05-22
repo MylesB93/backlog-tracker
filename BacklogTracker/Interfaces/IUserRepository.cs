@@ -11,6 +11,5 @@ namespace BacklogTracker.Interfaces
 		List<BacklogTrackerUser> GetAllUsers();
 		BacklogTrackerUser? GetUser(string? id);
 		void AddToCompleted(UserDto userDto);
-		BacklogTrackerUser GetUserFromDb();
 	}
 }

@@ -71,10 +71,25 @@ namespace BacklogTracker.Controllers.API
 			}
 		}
 
-		[HttpPatch]
+		[HttpPatch("add-game-to-completed-games")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public IActionResult AddToCompleted([FromBody] UserDto userDto)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				_backlogService.AddToCompleted(userDto);
+				return Ok(new { Message = "Data saved successfully." });
+			}
+			catch (ArgumentException ex)
+			{
+				return BadRequest(new { ErrorMessage = ex.Message });
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, "An error occurred while processing the request.");
+			}
 		}
 	}
 }
