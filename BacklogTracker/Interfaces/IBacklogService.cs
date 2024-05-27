@@ -8,5 +8,6 @@ namespace BacklogTracker.Interfaces
         void RemoveFromBacklog(UserDto userDto);
         List<string>? GetBacklog(string email);
         void AddToCompleted(UserDto userDto);
-    }
+		List<string>? GetCompleted(string email);
+	}
 }

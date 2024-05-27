@@ -31,5 +31,10 @@ namespace BacklogTracker.Services
         {
             _userRepository.AddToCompleted(userDto);
         }
-    }
+
+		public List<string>? GetCompleted(string email)
+		{
+			return _userRepository.GetUsersCompletedGames(email);
+		}
+	}
 }

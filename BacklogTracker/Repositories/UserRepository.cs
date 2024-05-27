@@ -104,5 +104,18 @@ namespace BacklogTracker.Repositories
 				_dbContext.SaveChanges();
 			}			
 		}
+
+		public List<string>? GetUsersCompletedGames(string email)
+		{
+			var user = _dbContext.Users.FirstOrDefault(u => u.Email == email);
+			if (user == null)
+			{
+				throw new ArgumentException("User not found.");
+			}
+
+			var completedGames = user.CompletedGameIDs;
+
+			return completedGames;
+		}
 	}
 }
