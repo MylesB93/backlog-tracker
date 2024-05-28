@@ -12,6 +12,7 @@ namespace BacklogTracker.Areas.Users.Pages
         private readonly IGameService _gameService;
 
         public List<Game>? GamesList { get; set; }
+        public List<Game>? CompletedGamesList { get; set; }
 
         public UserPageModel(IUserService userService, IGameService gameService) 
         { 
@@ -27,11 +28,19 @@ namespace BacklogTracker.Areas.Users.Pages
             if (!string.IsNullOrEmpty(userId)) 
             {
 				user = _userService.GetUser(userId);
+
                 var gameIds = user?.GameIDs;
                 if (gameIds != null && gameIds.Any())
                 {
 					var userGamesList = await _gameService.GetUsersGamesAsync(gameIds);
                     GamesList = userGamesList.Games.ToList();
+				}
+
+                var completedGameIds = user?.CompletedGameIDs;
+				if (completedGameIds != null && completedGameIds.Any())
+				{
+					var userCompGamesList = await _gameService.GetUsersGamesAsync(completedGameIds);
+					CompletedGamesList = userCompGamesList.Games.ToList();
 				}
 			}            
         }
