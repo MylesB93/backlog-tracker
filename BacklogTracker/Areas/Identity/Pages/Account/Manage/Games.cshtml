@@ -5,6 +5,7 @@
 	ViewData["ActivePage"] = ManageNavPages.Games;
 
 	var games = Model.Backlog?.Games;
+	var completedGames = Model.CompletedGames?.Games;
 	var user = Model.User.Identity;
 }
 
@@ -25,7 +26,7 @@
 			@foreach (var game in games)
 			{
 				<li>
-					<button type="button" class="btn btn-success" data-game-id="@game.Id" onclick="" )>✓</button>
+					<button type="button" class="btn btn-success" data-completed-game-id="@game.Id" onclick="addToCompleted(this,'@user?.Name?.Trim()')" )>✓</button>
 					<button type="button" class="btn btn-danger" data-game-id="@game.Id" onclick="removeFromBacklog(this,'@user?.Name?.Trim()')" )>X</button>
 					<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
 				</li>
@@ -36,5 +37,29 @@
 	else
 	{
 		<p>It appears you haven't added any games to your backlog!</p>
+	}
+</div>
+
+<h3>Completed Games</h3>
+<div>
+	@if (completedGames != null && completedGames.Any())
+	{
+
+		<ul class="games-list">
+
+			@foreach (var game in completedGames)
+			{
+				<li>
+					@* <button type="button" class="btn btn-success" data-completed-game-id="@game.Id" onclick="addToCompleted(this,'@user?.Name?.Trim()')" )>✓</button> *@
+					@* <button type="button" class="btn btn-danger" data-game-id="@game.Id" onclick="removeFromBacklog(this,'@user?.Name?.Trim()')" )>X</button> *@
+					<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
+				</li>
+			}
+		</ul>
+
+	}
+	else
+	{
+		<p>It appears you haven't completed any games!</p>
 	}
 </div>
