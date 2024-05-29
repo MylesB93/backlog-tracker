@@ -17,3 +17,11 @@
     overflow: hidden;
     margin-bottom: 10px;
 }
+
+.backlog-btn {
+    float: right;
+}
+
+.backlog-item {
+    margin-bottom: 35px;
+}

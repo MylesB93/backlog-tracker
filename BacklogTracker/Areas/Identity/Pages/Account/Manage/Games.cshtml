@@ -25,10 +25,12 @@
 
 			@foreach (var game in games)
 			{
-				<li>
-					<button type="button" class="btn btn-success" data-completed-game-id="@game.Id" onclick="addToCompleted(this,'@user?.Name?.Trim()')" )>✓</button>
-					<button type="button" class="btn btn-danger" data-game-id="@game.Id" onclick="removeFromBacklog(this,'@user?.Name?.Trim()')" )>X</button>
+				<li class="backlog-item">
 					<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
+					<div class="backlog-btn">
+						<button type="button" class="btn btn-success" data-completed-game-id="@game.Id" onclick="addToCompleted(this,'@user?.Name?.Trim()')" )>✓</button>
+						<button type="button" class="btn btn-danger" data-game-id="@game.Id" onclick="removeFromBacklog(this,'@user?.Name?.Trim()')" )>X</button>
+					</div>
 				</li>
 			}
 		</ul>
