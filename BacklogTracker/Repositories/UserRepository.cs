@@ -117,5 +117,10 @@ namespace BacklogTracker.Repositories
 
 			return completedGames;
 		}
+
+		public void RemoveFromUsersCompleted(UserDto userDto)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

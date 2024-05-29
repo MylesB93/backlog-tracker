@@ -26,10 +26,6 @@ namespace BacklogTracker.Controllers.API
 				_backlogService.AddToBacklog(userDto);
                 return Ok(new { Message = "Data saved successfully." });
             }
-			catch(ArgumentException ex)
-			{
-				return BadRequest(new { ErrorMessage = ex.Message });
-			}
 			catch (Exception ex)
 			{
                 return StatusCode(500, "An error occurred while processing the request.");
@@ -47,10 +43,6 @@ namespace BacklogTracker.Controllers.API
 				_backlogService.RemoveFromBacklog(userDto);
                 return Ok(new { Message = "Data saved successfully." });
             }
-			catch(ArgumentException ex)
-			{
-                return BadRequest(new { ErrorMessage = ex.Message });
-            }
 			catch(Exception ex)
 			{
                 return StatusCode(500, "An error occurred while processing the request.");
@@ -65,9 +57,9 @@ namespace BacklogTracker.Controllers.API
 				var gameIds = _backlogService.GetBacklog(email) ?? new List<string>();
 				return Ok(gameIds);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
-				return BadRequest(new {ErrorMessage =  ex.Message});
+				return StatusCode(500, "An error occurred while processing the request.");
 			}
 		}
 
@@ -82,9 +74,21 @@ namespace BacklogTracker.Controllers.API
 				_backlogService.AddToCompleted(userDto);
 				return Ok(new { Message = "Data saved successfully." });
 			}
-			catch (ArgumentException ex)
+			catch (Exception ex)
 			{
-				return BadRequest(new { ErrorMessage = ex.Message });
+				return StatusCode(500, "An error occurred while processing the request.");
+			}
+		}
+
+		public IActionResult MoveFromCompletedToBacklog([FromBody] UserDto userDto)
+		{
+			try
+			{
+				// remove from completed
+
+				// add to backlog
+				_backlogService.AddToBacklog(userDto);
+				return Ok(new { Message = "Data saved successfully." });
 			}
 			catch (Exception ex)
 			{

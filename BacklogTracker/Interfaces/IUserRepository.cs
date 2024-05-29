@@ -12,5 +12,6 @@ namespace BacklogTracker.Interfaces
 		BacklogTrackerUser? GetUser(string? id);
 		void AddToCompleted(UserDto userDto);
 		List<string>? GetUsersCompletedGames(string email);
+		void RemoveFromUsersCompleted(UserDto userDto);
 	}
 }

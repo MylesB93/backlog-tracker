@@ -36,5 +36,10 @@ namespace BacklogTracker.Services
 		{
 			return _userRepository.GetUsersCompletedGames(email);
 		}
+
+        public void RemoveFromCompleted(UserDto userDto)
+        {
+
+        }
 	}
 }
