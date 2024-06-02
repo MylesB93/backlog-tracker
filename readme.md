@@ -51,7 +51,9 @@ Called from JavaScript code to add and remove games from backlog. Backlog servic
 - AddToBacklog(): PATCH method for adding game ID's to user table. Calls Backlog service's AddToBacklog() method.
 - RemoveFromBacklog(): PATCH method for removing game ID's from user table. Calls Backlog service's RemoveFromBacklog() method.
 - GetUsersBacklog(): GET method for retrieving a user's games. Calls Backlog service's GetBacklog() method.
-
+- MoveFromCompletedToBacklog(): PATCH method for moving games from completed game ID's table to completed game ID's table. Calls both RemoveFromCompleted() and AddToBacklog() methods from Backlog service.
+- AddToCompleted(): PATCH method for adding games to completed game ID's table. Calls Backlog services AddToCompleted() method.
+ 
 ## JavaScript
 Methods using the Fetch API to make API calls to BacklogController.
 - addToBacklog(): Calls BacklogController's AddToBacklog() method to update user's GameID's.
