@@ -39,7 +39,7 @@ namespace BacklogTracker.Services
 
         public void RemoveFromCompleted(UserDto userDto)
         {
-
+            _userRepository.RemoveFromUsersCompleted(userDto);
         }
 	}
 }

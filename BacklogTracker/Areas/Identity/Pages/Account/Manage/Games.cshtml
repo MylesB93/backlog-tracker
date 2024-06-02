@@ -54,7 +54,7 @@
 				<li class="backlog-item">
 					<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
 					<div class="backlog-btn">
-						<button type="button" class="btn btn-warning" data-game-id="@game.Id" onclick="addToBacklog(this,'@user?.Name?.Trim()')" )>Backlog</button>
+						<button type="button" class="btn btn-warning" data-game-id="@game.Id" onclick="moveFromCompletedTobacklog(this,'@user?.Name?.Trim()')" )>Backlog</button>
 					</div>
 				</li>
 			}

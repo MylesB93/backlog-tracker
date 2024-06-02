@@ -80,11 +80,16 @@ namespace BacklogTracker.Controllers.API
 			}
 		}
 
+		[HttpPatch("move-from-completed-games-to-backlog")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public IActionResult MoveFromCompletedToBacklog([FromBody] UserDto userDto)
 		{
 			try
 			{
 				// remove from completed
+				_backlogService.RemoveFromCompleted(userDto);
 
 				// add to backlog
 				_backlogService.AddToBacklog(userDto);

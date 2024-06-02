@@ -120,7 +120,24 @@ namespace BacklogTracker.Repositories
 
 		public void RemoveFromUsersCompleted(UserDto userDto)
 		{
-			throw new NotImplementedException();
+			if (string.IsNullOrEmpty(userDto.GameID) || string.IsNullOrEmpty(userDto.Email))
+			{
+				throw new ArgumentException("GameID and Email are required.");
+			}
+
+			var user = _dbContext.Users.FirstOrDefault(u => u.Email == userDto.Email);
+			if (user == null)
+			{
+				throw new ArgumentException("User not found.");
+			}
+
+			var completedGameIDs = user.CompletedGameIDs;
+
+			if (completedGameIDs != null && completedGameIDs.Contains(userDto.GameID))
+			{
+				completedGameIDs.Remove(userDto.GameID);
+				_dbContext.SaveChanges();
+			}
 		}
 	}
 }
