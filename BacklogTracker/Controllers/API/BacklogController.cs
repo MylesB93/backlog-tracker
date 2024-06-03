@@ -17,8 +17,7 @@ namespace BacklogTracker.Controllers.API
 
         [HttpPatch("add-game-to-backlog")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult AddToBacklog([FromBody] UserDto userDto)
         {
 			try
@@ -34,8 +33,7 @@ namespace BacklogTracker.Controllers.API
 
 		[HttpPatch("remove-game-from-backlog")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 		public IActionResult RemoveFromBacklog([FromBody] UserDto userDto)
 		{
 			try
@@ -65,8 +63,7 @@ namespace BacklogTracker.Controllers.API
 
 		[HttpPatch("add-game-to-completed-games")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 		public IActionResult AddToCompleted([FromBody] UserDto userDto)
 		{
 			try
@@ -82,8 +79,7 @@ namespace BacklogTracker.Controllers.API
 
 		[HttpPatch("move-from-completed-games-to-backlog")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 		public IActionResult MoveFromCompletedToBacklog([FromBody] UserDto userDto)
 		{
 			try
