@@ -8,9 +8,9 @@
 
 <h1>@userName</h1>
 
+<h2>Backlog:</h2>
 @if (games != null && games.Any())
 {
-	<h2>Backlog:</h2>
 	<ul>		
 		@foreach (var game in games)
 		{
@@ -25,9 +25,9 @@ else
 	<p>This user has not added any games to their backlog.</p>
 }
 
+<h2>Completed Games:</h2>
 @if (completedGames != null && completedGames.Any())
-{
-	<h2>Backlog:</h2>
+{	
 	<ul>
 		@foreach (var game in completedGames)
 		{
