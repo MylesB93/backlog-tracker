@@ -25,9 +25,13 @@ namespace BacklogTracker.Controllers.API
 				_backlogService.AddToBacklog(userDto);
                 return Ok(new { Message = "Data saved successfully." });
             }
+			catch (ArgumentException ex)
+			{
+				return Conflict(ex.Message);
+			}
 			catch (Exception ex)
 			{
-                return StatusCode(500, "An error occurred while processing the request.");
+                return StatusCode(500, $"An error occurred while processing the request - {ex.Message}.");
             }            
         }
 
