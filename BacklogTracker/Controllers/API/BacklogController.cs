@@ -10,12 +10,9 @@ namespace BacklogTracker.Controllers.API
     {
 		private readonly IBacklogService _backlogService;
 
-        public BacklogController(IBacklogService backlogService)
-        { 
-			_backlogService = backlogService;
-        }
+        public BacklogController(IBacklogService backlogService) => _backlogService = backlogService;
 
-        [HttpPatch("add-game-to-backlog")]
+		[HttpPatch("add-game-to-backlog")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult AddToBacklog([FromBody] UserDto userDto)
