@@ -22,7 +22,6 @@
                 throw new Error('Network response was not ok.')
         })
         .then(data => {
-            console.log('Data successfully sent to the API:', data);
             alert(element.getAttribute("data-game-name") + " successfully added to backlog!");
         })
         .catch(error => {
@@ -56,7 +55,6 @@ function removeFromBacklog(element, email) {
                 throw new Error('Network response was not ok.')
         })
         .then(data => {
-            console.log('Data successfully sent to the API:', data);
             location.reload();
         })
         .catch(error => {
@@ -89,7 +87,6 @@ function addToCompleted(element, email) {
                 throw new Error('Network response was not ok.')
         })
         .then(data => {
-            console.log('Data successfully sent to the API:', data);
             location.reload();
         })
         .catch(error => {
@@ -122,7 +119,6 @@ function moveFromCompletedTobacklog(element, email) {
                 throw new Error('Network response was not ok.')
         })
         .then(data => {
-            console.log('Data successfully sent to the API:', data);
             location.reload();
         })
         .catch(error => {
