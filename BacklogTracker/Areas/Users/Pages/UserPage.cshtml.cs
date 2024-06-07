@@ -33,14 +33,14 @@ namespace BacklogTracker.Areas.Users.Pages
                 if (gameIds != null && gameIds.Any())
                 {
 					var userGamesList = await _gameService.GetUsersGamesAsync(gameIds);
-                    GamesList = userGamesList.Games.ToList();
+                    GamesList = userGamesList.Games?.ToList();
 				}
 
                 var completedGameIds = user?.CompletedGameIDs;
 				if (completedGameIds != null && completedGameIds.Any())
 				{
 					var userCompGamesList = await _gameService.GetUsersGamesAsync(completedGameIds);
-					CompletedGamesList = userCompGamesList.Games.ToList();
+					CompletedGamesList = userCompGamesList.Games?.ToList();
 				}
 			}            
         }

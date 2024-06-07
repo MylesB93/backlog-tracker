@@ -5,18 +5,18 @@ namespace BacklogTracker.Models
     public class Game
     {
         [XmlElement("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [XmlElement("site_detail_url")]
-        public string SiteDetailUrl { get; set; }
+        public string? SiteDetailUrl { get; set; }
 
         [XmlElement("resource_type")]
-        public string ResourceType { get; set; }
+        public string? ResourceType { get; set; }
 
         [XmlElement("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [XmlElement("id")]
-        public string Id { get; set; }
+        public string? Id { get; set; }
     }
 }

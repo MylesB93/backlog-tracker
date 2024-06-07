@@ -7,6 +7,6 @@ namespace BacklogTracker.Models
     {
         [XmlArray("results")]
         [XmlArrayItem("game")]
-        public List<Game> Games { get; set; }
+        public List<Game>? Games { get; set; }
     }
 }

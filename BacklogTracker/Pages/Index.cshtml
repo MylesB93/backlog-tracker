@@ -21,7 +21,7 @@
 	</div>
 </form>
 
-@if (Model.GamesResponse != null && Model.GamesResponse.Games.Any())
+@if (Model.GamesResponse?.Games is { Count: > 0 })
 {
 	<div class="row row-cols-4">
 		@foreach (var game in Model.GamesResponse.Games)
@@ -38,7 +38,7 @@
 								<p class="card-text">@(new HtmlString(game.Description))</p>
 							</div>
 						}
-						@if (user.IsAuthenticated)
+						@if (user !=null && user.IsAuthenticated)
 						{
 							<a class="btn btn-primary" id="btn_@game.Id" data-game-id="@game.Id" data-game-name="@game.Name" onclick="addToBacklog(this,'@user?.Name?.Trim()')">+</a>
 						}
@@ -48,7 +48,7 @@
 		}
 	</div>
 }
-else if (Model.GamesResponse != null && !Model.GamesResponse.Games.Any())
+else if (Model.GamesResponse?.Games is { Count: 0 })
 {
 	<p>@ViewData["NoResults"]</p>
 }
