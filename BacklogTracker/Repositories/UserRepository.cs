@@ -26,13 +26,14 @@ namespace BacklogTracker.Repositories
 			}
 
 			var gameIDs = user.GameIDs;
+			var completedGameIDs = user.CompletedGameIDs;
 
-			if (gameIDs != null && gameIDs.Contains(userDto.GameID))
+			if ((gameIDs != null && completedGameIDs != null) && (gameIDs.Contains(userDto.GameID) || completedGameIDs.Contains(userDto.GameID)))
 			{
 				throw new ArgumentException("GameID already exists in the user's backlog.");
 			}
 
-			if (gameIDs != null)
+			if (gameIDs != null) // TODO: Handle if game id's is null
 			{
 				gameIDs.Add(userDto.GameID);
 				_dbContext.SaveChanges();

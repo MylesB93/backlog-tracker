@@ -17,8 +17,7 @@
             if (response.ok)
                 return response.json();
             else if (response.status == 409)
-                // TODO: Implement this
-                console.log("409!")
+                throw new Error("Game already exists in backlog!");
             else
                 throw new Error('Network response was not ok.')
         })
