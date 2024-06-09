@@ -13,9 +13,9 @@ namespace BacklogTracker.Pages
         private readonly ILogger<IndexModel> _logger;
 
         [BindProperty(SupportsGet = true)]
-        public string SearchTerm { get; set; }
+        public string? SearchTerm { get; set; }
 
-        public Response GamesResponse { get; set; }
+        public Response? GamesResponse { get; set; }
 
         public IndexModel(IGameService gameService, ILogger<IndexModel> logger)
         {

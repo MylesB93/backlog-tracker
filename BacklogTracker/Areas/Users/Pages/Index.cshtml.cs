@@ -8,7 +8,7 @@ namespace BacklogTracker.Areas.Users.Pages
 	{
 		private readonly IUserService _userService;
 
-		public List<User> Users { get; set; }
+		public List<User>? Users { get; set; }
 
 		public IndexModel(IUserService userService)
 		{

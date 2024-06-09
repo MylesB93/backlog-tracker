@@ -33,7 +33,7 @@ namespace BacklogTracker.Services
             {
                 try
                 {
-                    games = (Response)xs.Deserialize(reader);
+                    games = (Response?)xs.Deserialize(reader);
                     _logger.LogInformation("Deserialization complete!");
                 }
                 catch (Exception ex)
@@ -44,7 +44,7 @@ namespace BacklogTracker.Services
 
             _logger.LogInformation("Request complete!");
 
-            return games;
+            return games ?? new Response();
         }
 
         public async Task<Response> GetUsersGamesAsync(List<string> gameIds)
@@ -61,7 +61,7 @@ namespace BacklogTracker.Services
             {
                 try
                 {
-                    gamesList = (Response)xs.Deserialize(reader);
+                    gamesList = (Response?)xs.Deserialize(reader);
                     _logger.LogInformation("Deserialization complete!");
                 }
                 catch (Exception ex)
@@ -73,7 +73,7 @@ namespace BacklogTracker.Services
             _logger.LogInformation("Request complete!");
 
 
-            return gamesList;
+            return gamesList ?? new Response();
         }
     }
 }
