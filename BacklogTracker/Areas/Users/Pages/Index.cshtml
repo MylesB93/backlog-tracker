@@ -8,7 +8,7 @@
 	@foreach(var user in Model.Users)
 	{
 		<li>
-			<a asp-area="Users" asp-page="/UserPage" asp-route-userId="@user.Id">@user.UserName</a> <!--TODO: Figure out how to add query string to url-->
+			<a asp-area="Users" asp-page="/UserPage" asp-route-userId="@user.Id">@user.UserName</a>
 		</li>
 	}
 </ul>
