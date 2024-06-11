@@ -16,8 +16,11 @@ public class BacklogUpdateTests
 	public BacklogUpdateTests()
 	{
 		_backlogServiceMock = new Mock<IBacklogService>();
+
+		// Setup GetBacklog() tests
 		_backlogServiceMock.Setup(s => s.GetBacklog("mylesbroomestest@hotmail.co.uk")).Returns(new List<string>() { "1234", "4567", "7890" });
 		_backlogServiceMock.Setup(s => s.GetBacklog("invalidemail@test.com")).Throws(new Exception());
+		_backlogServiceMock.Setup(s => s.GetBacklog("nogames@test.com")).Returns(new List<string>());
 
 		_controller = new BacklogController(_backlogServiceMock.Object);
 	}
@@ -41,5 +44,16 @@ public class BacklogUpdateTests
 
 		// Assert
 		Assert.Equal(500, result?.StatusCode);
+	}
+
+	[Fact]
+	public void GetUsersBacklog_WhenUserHasNoGames_ReturnsEmptyList()
+	{
+		// Act
+		var result = _controller.GetUsersBacklog("nogames@test.com") as OkObjectResult;
+
+		// Assert
+		var gameIds = Assert.IsType<List<string>>(result?.Value);
+		Assert.Empty(gameIds);
 	}
 }
