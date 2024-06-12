@@ -56,10 +56,7 @@ public class BacklogUpdateTests
 		_backlogServiceMock.Setup(s => s.AddToCompleted(_userDtoWithoutEmail)).Throws(new Exception());
 		_backlogServiceMock.Setup(s => s.AddToCompleted(_userDtoWithoutGameID)).Throws(new Exception());
 		_backlogServiceMock.Setup(s => s.AddToCompleted(_nonExistentUserDto)).Throws(new Exception());
-		//_backlogServiceMock.Setup(s => s.AddToCompleted(_existingGameIDUserDto)).Throws(new ArgumentException());
-
-		// Setup MoveFromCompleted() tests
-		
+		//_backlogServiceMock.Setup(s => s.AddToCompleted(_existingGameIDUserDto)).Throws(new ArgumentException());		
 
 		_controller = new BacklogController(_backlogServiceMock.Object);
 	}
