@@ -58,6 +58,9 @@ public class BacklogUpdateTests
 		_backlogServiceMock.Setup(s => s.AddToCompleted(_nonExistentUserDto)).Throws(new Exception());
 		//_backlogServiceMock.Setup(s => s.AddToCompleted(_existingGameIDUserDto)).Throws(new ArgumentException());
 
+		// Setup MoveFromCompleted() tests
+		
+
 		_controller = new BacklogController(_backlogServiceMock.Object);
 	}
 
@@ -228,6 +231,26 @@ public class BacklogUpdateTests
 	{
 		// Act
 		var result = _controller.AddToCompleted(_nonExistentUserDto) as ObjectResult;
+
+		// Assert
+		Assert.Equal(500, result?.StatusCode);
+	}
+
+	[Fact]
+	public void MoveFromCompletedToBacklog_WhenCalled_Returns200StatusCode()
+	{
+		// Act
+		var result = _controller.MoveFromCompletedToBacklog(_validUserDto) as OkObjectResult;
+
+		// Assert
+		Assert.Equal(200, result?.StatusCode);
+	}
+
+	[Fact]
+	public void MoveFromCompletedToBacklog_WhenUserDtoHasNoEmail_Returns500StatusCode()
+	{
+		// Act
+		var result = _controller.MoveFromCompletedToBacklog(_userDtoWithoutEmail) as ObjectResult;
 
 		// Assert
 		Assert.Equal(500, result?.StatusCode);
