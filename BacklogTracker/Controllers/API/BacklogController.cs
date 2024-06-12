@@ -67,6 +67,7 @@ namespace BacklogTracker.Controllers.API
 		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 		public IActionResult AddToCompleted([FromBody] UserDto userDto)
 		{
+			// TODO: Handle conflict if game already exists in completed games
 			try
 			{
 				_backlogService.AddToCompleted(userDto);

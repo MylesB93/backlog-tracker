@@ -44,13 +44,13 @@ namespace BacklogTracker.Repositories
 		{
 			if (string.IsNullOrEmpty(userDto.GameID) || string.IsNullOrEmpty(userDto.Email))
 			{
-				throw new ArgumentException("GameID and Email are required.");
+				throw new Exception("GameID and Email are required.");
 			}
 
 			var user = _dbContext.Users.FirstOrDefault(u => u.Email == userDto.Email);
 			if (user == null)
 			{
-				throw new ArgumentException("User not found.");
+				throw new Exception("User not found.");
 			}
 
 			var gameIDs = user.GameIDs;
@@ -89,13 +89,13 @@ namespace BacklogTracker.Repositories
 		{
 			if (string.IsNullOrEmpty(userDto.GameID) || string.IsNullOrEmpty(userDto.Email))
 			{
-				throw new ArgumentException("GameID and Email are required.");
+				throw new Exception("GameID and Email are required.");
 			}
 
 			var user = _dbContext.Users.FirstOrDefault(u => u.Email == userDto.Email);
 			if (user == null)
 			{
-				throw new ArgumentException("User not found.");
+				throw new Exception("User not found.");
 			}
 
 			var gameIDs = user.GameIDs;
