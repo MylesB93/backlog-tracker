@@ -33,7 +33,7 @@ namespace BacklogTracker.Repositories
 				throw new ArgumentException("GameID already exists in the user's backlog.");
 			}
 
-			if (gameIDs != null) // TODO: Handle if game id's is null
+			if (gameIDs != null)
 			{
 				gameIDs.Add(userDto.GameID);
 				_dbContext.SaveChanges();
