@@ -25,6 +25,7 @@ namespace BacklogTracker.Pages
 
         public async void OnPost()
         {
+            _logger.LogInformation("Fetching games from GiantBomb API...");
             string? query = Request.Form["query"];
 
             if (!string.IsNullOrEmpty(query))

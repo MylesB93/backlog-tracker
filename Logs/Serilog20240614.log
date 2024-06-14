@@ -1,0 +1,45 @@
+[2024-06-14 22:28:34.281 +01:00  INF]  User profile is available. Using 'C:\Users\myles\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+[2024-06-14 22:28:34.929 +01:00  INF]  Now listening on: https://localhost:7104
+[2024-06-14 22:28:34.930 +01:00  INF]  Now listening on: http://localhost:5038
+[2024-06-14 22:28:34.933 +01:00  INF]  Application started. Press Ctrl+C to shut down.
+[2024-06-14 22:28:34.934 +01:00  INF]  Hosting environment: Development
+[2024-06-14 22:28:34.934 +01:00  INF]  Content root path: C:\Users\myles\source\repos\BacklogTracker\BacklogTracker
+[2024-06-14 22:28:35.424 +01:00  INF]  Request starting HTTP/2 GET https://localhost:7104/ - null null
+[2024-06-14 22:28:35.722 +01:00  INF]  Executing endpoint '/Index'
+[2024-06-14 22:28:35.848 +01:00  INF]  Route matched with {page = "/Index", action = "", controller = "", area = ""}. Executing page /Index
+[2024-06-14 22:28:35.868 +01:00  INF]  Executing an implicit handler method - ModelState is "Valid"
+[2024-06-14 22:28:35.870 +01:00  INF]  Executed an implicit handler method, returned result Microsoft.AspNetCore.Mvc.RazorPages.PageResult.
+[2024-06-14 22:28:36.432 +01:00  INF]  Executed page /Index in 577.044ms
+[2024-06-14 22:28:36.441 +01:00  INF]  Executed endpoint '/Index'
+[2024-06-14 22:28:36.454 +01:00  INF]  Request finished HTTP/2 GET https://localhost:7104/ - 200 null text/html; charset=utf-8 1032.6374ms
+[2024-06-14 22:28:36.463 +01:00  INF]  Request starting HTTP/2 GET https://localhost:7104/BacklogTracker.styles.css?v=XL5sTpQg9yIZrxI8rvsrdVSlFpS3NIUTeOI0Rx3KlBM - null null
+[2024-06-14 22:28:36.463 +01:00  INF]  Request starting HTTP/2 GET https://localhost:7104/js/site.js?v=QEBup5SjlLhIDFDk_dh0jN8NOFwUCtaS9XtfrEEtSFE - null null
+[2024-06-14 22:28:36.464 +01:00  INF]  Request starting HTTP/2 GET https://localhost:7104/_framework/aspnetcore-browser-refresh.js - null null
+[2024-06-14 22:28:36.470 +01:00  INF]  The file /js/site.js was not modified
+[2024-06-14 22:28:36.470 +01:00  INF]  The file /BacklogTracker.styles.css was not modified
+[2024-06-14 22:28:36.471 +01:00  INF]  Request finished HTTP/2 GET https://localhost:7104/js/site.js?v=QEBup5SjlLhIDFDk_dh0jN8NOFwUCtaS9XtfrEEtSFE - 304 null text/javascript 7.7734ms
+[2024-06-14 22:28:36.471 +01:00  INF]  Request finished HTTP/2 GET https://localhost:7104/BacklogTracker.styles.css?v=XL5sTpQg9yIZrxI8rvsrdVSlFpS3NIUTeOI0Rx3KlBM - 304 null text/css 7.9224ms
+[2024-06-14 22:28:36.477 +01:00  INF]  Request finished HTTP/2 GET https://localhost:7104/_framework/aspnetcore-browser-refresh.js - 200 13764 application/javascript; charset=utf-8 13.0328ms
+[2024-06-14 22:28:36.510 +01:00  INF]  Request starting HTTP/2 GET https://localhost:7104/_vs/browserLink - null null
+[2024-06-14 22:28:36.645 +01:00  INF]  Request finished HTTP/2 GET https://localhost:7104/_vs/browserLink - 200 null text/javascript; charset=UTF-8 135.772ms
+[2024-06-14 22:28:44.290 +01:00  INF]  Request starting HTTP/2 POST https://localhost:7104/ - application/x-www-form-urlencoded 194
+[2024-06-14 22:28:44.296 +01:00  INF]  Executing endpoint '/Index'
+[2024-06-14 22:28:44.297 +01:00  INF]  Route matched with {page = "/Index", action = "", controller = "", area = ""}. Executing page /Index
+[2024-06-14 22:28:44.314 +01:00  INF]  Executing handler method BacklogTracker.Pages.IndexModel.OnPost - ModelState is "Valid"
+[2024-06-14 22:28:44.316 +01:00  INF]  Fetching games from GiantBomb API...
+[2024-06-14 22:28:44.373 +01:00  INF]  Start processing HTTP request GET https://www.giantbomb.com/api/search/?api_key=971b75abd389a994ecfcc70ae5ebab3e2abe2a35&query=zelda&resources=game&field_list=name,site_detail_url,description,id
+[2024-06-14 22:28:44.374 +01:00  INF]  Sending HTTP request GET https://www.giantbomb.com/api/search/?api_key=971b75abd389a994ecfcc70ae5ebab3e2abe2a35&query=zelda&resources=game&field_list=name,site_detail_url,description,id
+[2024-06-14 22:28:45.778 +01:00  INF]  Received HTTP response headers after 1399.343ms - 200
+[2024-06-14 22:28:45.779 +01:00  INF]  End processing HTTP request after 1408.9665ms - 200
+[2024-06-14 22:28:46.051 +01:00  INF]  Deserialization complete!
+[2024-06-14 22:28:46.051 +01:00  INF]  Request complete!
+[2024-06-14 22:28:46.051 +01:00  INF]  Executed handler method OnPost, returned result .
+[2024-06-14 22:28:46.051 +01:00  INF]  Executing an implicit handler method - ModelState is "Valid"
+[2024-06-14 22:28:46.051 +01:00  INF]  Executed an implicit handler method, returned result Microsoft.AspNetCore.Mvc.RazorPages.PageResult.
+[2024-06-14 22:28:46.089 +01:00  INF]  Executed page /Index in 1791.4225ms
+[2024-06-14 22:28:46.090 +01:00  INF]  Executed endpoint '/Index'
+[2024-06-14 22:28:46.091 +01:00  INF]  Request finished HTTP/2 POST https://localhost:7104/ - 200 null text/html; charset=utf-8 1801.7617ms
+[2024-06-14 22:28:46.166 +01:00  INF]  Request starting HTTP/2 GET https://localhost:7104/_framework/aspnetcore-browser-refresh.js - null null
+[2024-06-14 22:28:46.167 +01:00  INF]  Request finished HTTP/2 GET https://localhost:7104/_framework/aspnetcore-browser-refresh.js - 200 13764 application/javascript; charset=utf-8 0.9905ms
+[2024-06-14 22:28:46.167 +01:00  INF]  Request starting HTTP/2 GET https://localhost:7104/_vs/browserLink - null null
+[2024-06-14 22:28:46.175 +01:00  INF]  Request finished HTTP/2 GET https://localhost:7104/_vs/browserLink - 200 null text/javascript; charset=UTF-8 7.8821ms

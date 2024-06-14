@@ -2,9 +2,8 @@ using BacklogTracker.Data;
 using BacklogTracker.Interfaces;
 using BacklogTracker.Repositories;
 using BacklogTracker.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Net.Http.Headers;
+using Serilog;
 
 namespace BacklogTracker
 {
@@ -44,6 +43,14 @@ namespace BacklogTracker
 				httpClient.BaseAddress = new Uri("https://www.giantbomb.com/");
 				httpClient.DefaultRequestHeaders.Add("User-Agent", "Backlog Tracker app");
 			});
+
+            var logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(builder.Configuration)
+                .Enrich.FromLogContext()
+                .CreateLogger();
+
+            builder.Logging.ClearProviders();
+            builder.Logging.AddSerilog(logger);
 
 			var app = builder.Build();
 
