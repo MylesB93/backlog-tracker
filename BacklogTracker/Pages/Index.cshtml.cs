@@ -24,20 +24,20 @@ namespace BacklogTracker.Pages
         }
 
         public async void OnPost()
-        {
-            _logger.LogInformation("Fetching games from GiantBomb API...");
+        {            
             string? query = Request.Form["query"];
 
             if (!string.IsNullOrEmpty(query))
             { 
                 try
                 {
+					_logger.LogInformation("Fetching games from GiantBomb API...");
 					GamesResponse = await _gameService.GetGamesAsync(Request.Form["query"]);
                     ViewData["NoResults"] = GamesResponse == null ? "" : "No Games Matching The Query!";
 				}
                 catch (Exception ex)
                 {
-					_logger.LogError(ex, "Error occurred while fetching games.");
+					_logger.LogError(ex, $"Error occurred while fetching games - {ex.Message}");
 				}
 			}
 		}

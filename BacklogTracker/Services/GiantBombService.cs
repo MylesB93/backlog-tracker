@@ -38,7 +38,7 @@ namespace BacklogTracker.Services
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError("Error occurred during deserialization: {0}", ex.Message);
+                    _logger.LogError($"Error occurred during deserialization: {ex.Message}");
                 }
             }
 
@@ -66,7 +66,7 @@ namespace BacklogTracker.Services
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError("Error occurred during deserialization: {0}", ex.Message);
+                    _logger.LogError($"Error occurred during deserialization: {ex.Message}");
                 }
             }
 
