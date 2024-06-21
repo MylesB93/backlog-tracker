@@ -1,12 +1,10 @@
 using BacklogTracker.Interfaces;
 using BacklogTracker.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BacklogTracker.Areas.Identity.Pages.Account.Manage
 {
-    public class GamesModel : PageModel
+	public class GamesModel : PageModel
     {
         private readonly IGameService _gameService;
         private readonly IBacklogService _backlogService;

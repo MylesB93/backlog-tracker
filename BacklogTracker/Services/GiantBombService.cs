@@ -1,12 +1,11 @@
 ﻿using BacklogTracker.Interfaces;
 using BacklogTracker.Models;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Options;
 
 namespace BacklogTracker.Services
 {
-    public class GiantBombService : IGameService
+	public class GiantBombService : IGameService
     {
         private readonly ILogger<GiantBombService> _logger;
         private IOptions<GiantBombConfiguration> _giantBombConfiguration;

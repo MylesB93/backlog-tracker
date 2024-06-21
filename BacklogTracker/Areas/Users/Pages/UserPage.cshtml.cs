@@ -1,12 +1,11 @@
 using BacklogTracker.Data;
 using BacklogTracker.Interfaces;
 using BacklogTracker.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BacklogTracker.Areas.Users.Pages
 {
-    public class UserPageModel : PageModel
+	public class UserPageModel : PageModel
     {
         private readonly IUserService _userService;
         private readonly IGameService _gameService;

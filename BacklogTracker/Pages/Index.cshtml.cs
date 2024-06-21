@@ -2,12 +2,10 @@ using BacklogTracker.Interfaces;
 using BacklogTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Options;
-using System.Xml.Serialization;
 
 namespace BacklogTracker.Pages
 {
-    public class IndexModel : PageModel
+	public class IndexModel : PageModel
     {
         private readonly IGameService _gameService;
         private readonly ILogger<IndexModel> _logger;
