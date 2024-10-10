@@ -31,4 +31,8 @@
     <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GameServiceLibrary\GameServiceLibrary.csproj" />
+  </ItemGroup>
+
 </Project>
