@@ -1,0 +1,13 @@
+[2025-11-24 21:01:31.464 +00:00  BacklogTracker.Areas.Identity.Pages.Account.LoginModel INF]  User logged in.
+[2025-11-24 21:02:05.571 +00:00  BacklogTracker.Areas.Identity.Pages.Account.Manage.GamesModel INF]  Fetching backlog...
+[2025-11-24 21:02:06.096 +00:00  BacklogTracker.Services.GiantBombService INF]  Deserialization complete!
+[2025-11-24 21:02:06.097 +00:00  BacklogTracker.Services.GiantBombService INF]  Request complete!
+[2025-11-24 21:02:06.098 +00:00  BacklogTracker.Areas.Identity.Pages.Account.Manage.GamesModel INF]  Fetching completed games...
+[2025-11-24 21:02:06.371 +00:00  BacklogTracker.Services.GiantBombService INF]  Deserialization complete!
+[2025-11-24 21:02:06.375 +00:00  BacklogTracker.Services.GiantBombService INF]  Request complete!
+[2025-11-24 21:02:12.999 +00:00  BacklogTracker.Areas.Identity.Pages.Account.Manage.GamesModel INF]  Fetching backlog...
+[2025-11-24 21:02:13.333 +00:00  BacklogTracker.Services.GiantBombService INF]  Deserialization complete!
+[2025-11-24 21:02:13.333 +00:00  BacklogTracker.Services.GiantBombService INF]  Request complete!
+[2025-11-24 21:02:13.333 +00:00  BacklogTracker.Areas.Identity.Pages.Account.Manage.GamesModel INF]  Fetching completed games...
+[2025-11-24 21:02:13.640 +00:00  BacklogTracker.Services.GiantBombService INF]  Deserialization complete!
+[2025-11-24 21:02:13.640 +00:00  BacklogTracker.Services.GiantBombService INF]  Request complete!

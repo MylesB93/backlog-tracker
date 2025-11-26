@@ -1,8 +1,8 @@
-using BacklogTracker.Interfaces;
 using Moq;
+using BacklogTracker.Application.Interfaces;
 using BacklogTracker.Controllers.API;
+using BacklogTracker.Application.Data.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using BacklogTracker.Data.DTOs;
 
 namespace BacklogTracker.Tests;
 
