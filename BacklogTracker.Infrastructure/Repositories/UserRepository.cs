@@ -79,7 +79,7 @@ namespace BacklogTracker.Infrastructure.Repositories
 		public List<UserDto> GetAllUsers()
 		{
 			return _dbContext.Users
-				.Select(u => new UserDto { Email = u.Email, UserName = u.UserName })
+				.Select(u => new UserDto { Email = u.Email, UserName = u.UserName, Id = u.Id })
 				.ToList();
 		}
 
@@ -87,7 +87,7 @@ namespace BacklogTracker.Infrastructure.Repositories
 		{
 			var user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
 			if (user == null) return null;
-			return new UserDto { Email = user.Email };
+			return new UserDto { Email = user.Email, CompletedGameIDs = user?.CompletedGameIDs ?? new List<string>(), GameIDs = user?.GameIDs ?? new List<string>() };
 		}
 
 		public void AddToCompleted(UserDto userDto)
