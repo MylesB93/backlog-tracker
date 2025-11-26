@@ -79,7 +79,7 @@ namespace BacklogTracker.Infrastructure.Repositories
 		public List<UserDto> GetAllUsers()
 		{
 			return _dbContext.Users
-				.Select(u => new UserDto { Email = u.Email })
+				.Select(u => new UserDto { Email = u.Email, UserName = u.UserName })
 				.ToList();
 		}
 
