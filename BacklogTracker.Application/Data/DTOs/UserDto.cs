@@ -8,6 +8,5 @@
         public string? GameID { get; set; }
         public List<string> GameIDs { get; set; } = new();
         public List<string> CompletedGameIDs { get; set; } = new();
-
 	}
 }
