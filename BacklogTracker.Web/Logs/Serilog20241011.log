@@ -1,0 +1,9 @@
+[2024-10-11 15:05:55.350 +01:00  BacklogTracker.Pages.IndexModel INF]  Fetching games from GiantBomb API...
+[2024-10-11 15:05:57.188 +01:00  BacklogTracker.Services.GiantBombService INF]  Deserialization complete!
+[2024-10-11 15:05:57.189 +01:00  BacklogTracker.Services.GiantBombService INF]  Request complete!
+[2024-10-11 15:07:58.379 +01:00  BacklogTracker.Pages.IndexModel INF]  Fetching games from GiantBomb API...
+[2024-10-11 15:07:58.919 +01:00  BacklogTracker.Services.GiantBombService INF]  Deserialization complete!
+[2024-10-11 15:07:58.920 +01:00  BacklogTracker.Services.GiantBombService INF]  Request complete!
+[2024-10-11 15:08:09.941 +01:00  BacklogTracker.Pages.IndexModel INF]  Fetching games from GiantBomb API...
+[2024-10-11 15:08:10.897 +01:00  BacklogTracker.Services.GiantBombService INF]  Deserialization complete!
+[2024-10-11 15:08:10.898 +01:00  BacklogTracker.Services.GiantBombService INF]  Request complete!
