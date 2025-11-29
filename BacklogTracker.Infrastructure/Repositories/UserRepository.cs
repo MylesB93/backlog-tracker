@@ -87,7 +87,7 @@ namespace BacklogTracker.Infrastructure.Repositories
 		{
 			var user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
 			if (user == null) return null;
-			return new UserDto { Email = user.Email, CompletedGameIDs = user?.CompletedGameIDs ?? new List<string>(), GameIDs = user?.GameIDs ?? new List<string>() };
+			return new UserDto { Email = user.Email, CompletedGameIDs = user.CompletedGameIDs ?? new List<string>(), GameIDs = user.GameIDs ?? new List<string>() };
 		}
 
 		public void AddToCompleted(UserDto userDto)
