@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using BacklogTracker.Application.Interfaces;
 using BacklogTracker.Infrastructure.Repositories;
-using BacklogTracker.Application.Data.DTOs;
 using BacklogTracker.Infrastructure.Entities;
+using BacklogTracker.Infrastructure.Services;
 
 namespace BacklogTracker
 {

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using BacklogTracker.Application.Interfaces;
 
-namespace BacklogTracker.Services
+namespace BacklogTracker.Infrastructure.Services
 {
 	public class GiantBombService : IGameService
     {
