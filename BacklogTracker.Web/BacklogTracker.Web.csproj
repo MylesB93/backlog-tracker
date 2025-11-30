@@ -32,10 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\BacklogTracker.Application\BacklogTracker.Application.csproj" />
     <ProjectReference Include="..\BacklogTracker.Infrastructure\BacklogTracker.Infrastructure.csproj" />
   </ItemGroup>
