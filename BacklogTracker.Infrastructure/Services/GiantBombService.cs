@@ -3,6 +3,7 @@ using System.Xml.Serialization;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using BacklogTracker.Application.Interfaces;
+using BacklogTracker.Infrastructure.Configuration;
 
 namespace BacklogTracker.Infrastructure.Services
 {

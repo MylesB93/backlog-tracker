@@ -6,6 +6,7 @@ using BacklogTracker.Application.Interfaces;
 using BacklogTracker.Infrastructure.Repositories;
 using BacklogTracker.Infrastructure.Entities;
 using BacklogTracker.Infrastructure.Services;
+using BacklogTracker.Infrastructure.Configuration;
 
 namespace BacklogTracker
 {

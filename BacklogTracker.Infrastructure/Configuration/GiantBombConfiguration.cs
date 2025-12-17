@@ -1,4 +1,4 @@
-﻿namespace BacklogTracker
+﻿namespace BacklogTracker.Infrastructure.Configuration
 {
     public class GiantBombConfiguration
     {
