@@ -33,10 +33,17 @@ namespace BacklogTracker
                 .Build();
             builder.Services.Configure<GiantBombConfiguration>(GiantBombConfiguration.GetSection("GiantBombConfiguration"));
 
-            builder.Services.AddControllers()
+			var IGDBConfiguration = new ConfigurationBuilder()
+				.SetBasePath(Directory.GetCurrentDirectory())
+				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+				.AddUserSecrets<Program>()
+				.Build();
+			builder.Services.Configure<GiantBombConfiguration>(IGDBConfiguration.GetSection("IGDBConfiguration"));
+
+			builder.Services.AddControllers()
                 .AddNewtonsoftJson();
 
-            builder.Services.AddScoped<IGameService, GiantBombService>();
+            builder.Services.AddScoped<IGameService, IGDBService>();
             builder.Services.AddScoped<IBacklogService, BacklogService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
@@ -47,7 +54,12 @@ namespace BacklogTracker
 				httpClient.DefaultRequestHeaders.Add("User-Agent", "Backlog Tracker app");
 			});
 
-            var logger = new LoggerConfiguration()
+			builder.Services.AddHttpClient("IGDB", httpClient =>
+			{
+				httpClient.BaseAddress = new Uri("https://api.igdb.com/v4/");
+			});
+
+			var logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(builder.Configuration)
                 .Enrich.FromLogContext()
                 .CreateLogger();
