@@ -28,7 +28,7 @@ namespace BacklogTracker.Infrastructure.Services
 			client.DefaultRequestHeaders.Add("Client-ID", "xmq9cokqifli4gcm219wsjxbj9xp63");
 			client.DefaultRequestHeaders.Add("Authorization", "Bearer 36nyegwmx2q11ves4x9ap4p05uzrp2");
 
-			var response = await client.GetAsync($"games?fields=name;&search={query};&limit=5;");
+			var response = await client.GetAsync($"games?fields=name,url;&search={query};&limit=5;");
 
 			if (!response.IsSuccessStatusCode)
 			{
