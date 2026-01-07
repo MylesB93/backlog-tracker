@@ -21,7 +21,7 @@ namespace BacklogTracker.Pages
             _logger = logger;
         }
 
-        public async void OnPost()
+        public async Task OnPost()
         {            
             string? query = Request.Form["query"];
 
