@@ -33,12 +33,12 @@ namespace BacklogTracker
                 .Build();
             builder.Services.Configure<GiantBombConfiguration>(GiantBombConfiguration.GetSection("GiantBombConfiguration"));
 
-			var IGDBConfiguration = new ConfigurationBuilder()
+			var igdbConfiguration = new ConfigurationBuilder()
 				.SetBasePath(Directory.GetCurrentDirectory())
 				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
 				.AddUserSecrets<Program>()
 				.Build();
-			builder.Services.Configure<IGDBConfiguration>(IGDBConfiguration.GetSection("IGDBConfiguration"));
+			builder.Services.Configure<IGDBConfiguration>(igdbConfiguration.GetSection("IGDBConfiguration"));
 
 			builder.Services.AddControllers()
                 .AddNewtonsoftJson();
