@@ -1,7 +1,7 @@
-﻿namespace BacklogTracker.Application.Entities
+﻿namespace BacklogTracker.Application.Data.DTOs
 {
 	public class GameCollectionDto
 	{
-		public List<GameDto>? Games { get; set; }
+		public System.Collections.Generic.List<GameDto>? Games { get; set; }
 	}
 }
