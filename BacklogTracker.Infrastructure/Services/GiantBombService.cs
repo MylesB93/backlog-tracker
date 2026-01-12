@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using BacklogTracker.Application.Interfaces;
 using BacklogTracker.Infrastructure.Configuration;
-using BacklogTracker.Application.Entities;
+using BacklogTracker.Application.Data.DTOs;
 
 namespace BacklogTracker.Infrastructure.Services
 {

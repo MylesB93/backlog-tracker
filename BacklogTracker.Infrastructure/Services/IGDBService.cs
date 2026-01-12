@@ -1,4 +1,4 @@
-﻿using BacklogTracker.Application.Entities;
+﻿using BacklogTracker.Application.Data.DTOs;
 using BacklogTracker.Application.Interfaces;
 using BacklogTracker.Infrastructure.Configuration;
 using BacklogTracker.Models;

@@ -1,8 +1,5 @@
 using BacklogTracker.Application.Data.DTOs;
-using BacklogTracker.Application.Entities;
 using BacklogTracker.Application.Interfaces;
-using BacklogTracker.Infrastructure.Entities;
-using BacklogTracker.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BacklogTracker.Areas.Users.Pages
