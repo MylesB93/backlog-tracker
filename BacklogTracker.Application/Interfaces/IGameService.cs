@@ -1,4 +1,4 @@
-﻿using BacklogTracker.Application.Entities;
+﻿using BacklogTracker.Application.Data.DTOs;
 
 namespace BacklogTracker.Application.Interfaces
 {

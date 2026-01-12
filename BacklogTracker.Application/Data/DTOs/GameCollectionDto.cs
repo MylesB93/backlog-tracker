@@ -2,6 +2,6 @@
 {
 	public class GameCollectionDto
 	{
-		public System.Collections.Generic.List<GameDto>? Games { get; set; }
+		public List<GameDto>? Games { get; set; }
 	}
 }
