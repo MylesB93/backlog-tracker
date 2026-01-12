@@ -25,11 +25,6 @@ namespace BacklogTracker.Infrastructure.Services
 		{
 			var client = _httpClientFactory.CreateClient("IGDB");
 
-			client.DefaultRequestHeaders.Remove("Client-ID");
-            client.DefaultRequestHeaders.Remove("Authorization");
-            client.DefaultRequestHeaders.Add("Client-ID", _igdbConfiguration.Value.ClientID);
-			client.DefaultRequestHeaders.Add("Authorization", _igdbConfiguration.Value.Authorization);
-
 			var encodedQuery = Uri.EscapeDataString(query ?? string.Empty);
 			var response = await client.GetAsync($"games?fields=name,url,storyline;&search={encodedQuery};&limit={_igdbConfiguration.Value.GameLimit};");
 
@@ -69,11 +64,6 @@ namespace BacklogTracker.Infrastructure.Services
 		public async Task<GameCollectionDto> GetUsersGamesAsync(List<string> gameIds)
 		{
 			var client = _httpClientFactory.CreateClient("IGDB");
-
-            client.DefaultRequestHeaders.Remove("Client-ID");
-            client.DefaultRequestHeaders.Remove("Authorization");
-			client.DefaultRequestHeaders.Add("Client-ID", _igdbConfiguration.Value.ClientID);
-			client.DefaultRequestHeaders.Add("Authorization", _igdbConfiguration.Value.Authorization);
 
             // Validate and filter gameIds to ensure only numeric IDs are used in the query
             if (gameIds == null || gameIds.Count == 0)

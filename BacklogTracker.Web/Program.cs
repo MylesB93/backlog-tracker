@@ -7,6 +7,7 @@ using BacklogTracker.Infrastructure.Repositories;
 using BacklogTracker.Infrastructure.Entities;
 using BacklogTracker.Infrastructure.Services;
 using BacklogTracker.Infrastructure.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace BacklogTracker
 {
@@ -54,9 +55,20 @@ namespace BacklogTracker
 				httpClient.DefaultRequestHeaders.Add("User-Agent", "Backlog Tracker app");
 			});
 
-			builder.Services.AddHttpClient("IGDB", httpClient =>
+			builder.Services.AddHttpClient("IGDB", (serviceProvider, httpClient) =>
 			{
 				httpClient.BaseAddress = new Uri("https://api.igdb.com/v4/");
+				
+				// Get IGDB configuration to set headers
+				var igdbConfig = serviceProvider.GetRequiredService<IOptions<IGDBConfiguration>>();
+				if (!string.IsNullOrWhiteSpace(igdbConfig.Value.ClientID))
+				{
+					httpClient.DefaultRequestHeaders.Add("Client-ID", igdbConfig.Value.ClientID);
+				}
+				if (!string.IsNullOrWhiteSpace(igdbConfig.Value.Authorization))
+				{
+					httpClient.DefaultRequestHeaders.Add("Authorization", igdbConfig.Value.Authorization);
+				}
 			});
 
 			var logger = new LoggerConfiguration()
