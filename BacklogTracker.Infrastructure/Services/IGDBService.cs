@@ -25,6 +25,8 @@ namespace BacklogTracker.Infrastructure.Services
 		{
 			var client = _httpClientFactory.CreateClient("IGDB");
 
+            client.DefaultRequestHeaders.Remove("Client-ID");
+            client.DefaultRequestHeaders.Remove("Authorization");
             client.DefaultRequestHeaders.Add("Client-ID", _igdbConfiguration.Value.ClientID);
 			client.DefaultRequestHeaders.Add("Authorization", _igdbConfiguration.Value.Authorization);
 
