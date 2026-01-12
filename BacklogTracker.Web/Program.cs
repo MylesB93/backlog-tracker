@@ -38,7 +38,7 @@ namespace BacklogTracker
 				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
 				.AddUserSecrets<Program>()
 				.Build();
-			builder.Services.Configure<GiantBombConfiguration>(IGDBConfiguration.GetSection("IGDBConfiguration"));
+			builder.Services.Configure<IGDBConfiguration>(IGDBConfiguration.GetSection("IGDBConfiguration"));
 
 			builder.Services.AddControllers()
                 .AddNewtonsoftJson();

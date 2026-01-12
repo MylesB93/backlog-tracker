@@ -25,9 +25,8 @@ namespace BacklogTracker.Infrastructure.Services
 		{
 			var client = _httpClientFactory.CreateClient("IGDB");
 
-			//TODO: Move headers to secrets
-			client.DefaultRequestHeaders.Add("Client-ID", "xmq9cokqifli4gcm219wsjxbj9xp63");
-			client.DefaultRequestHeaders.Add("Authorization", "Bearer 36nyegwmx2q11ves4x9ap4p05uzrp2");
+            client.DefaultRequestHeaders.Add("Client-ID", _igdbConfiguration.Value.ClientID);
+			client.DefaultRequestHeaders.Add("Authorization", _igdbConfiguration.Value.Authorization);
 
 			var response = await client.GetAsync($"games?fields=name,url,storyline;&search={query};&limit=5;");
 
@@ -68,11 +67,10 @@ namespace BacklogTracker.Infrastructure.Services
 		{
 			var client = _httpClientFactory.CreateClient("IGDB");
 
-			//TODO: Move headers to secrets
-			client.DefaultRequestHeaders.Add("Client-ID", "xmq9cokqifli4gcm219wsjxbj9xp63");
-			client.DefaultRequestHeaders.Add("Authorization", "Bearer 36nyegwmx2q11ves4x9ap4p05uzrp2");
+            client.DefaultRequestHeaders.Add("Client-ID", _igdbConfiguration.Value.ClientID);
+            client.DefaultRequestHeaders.Add("Authorization", _igdbConfiguration.Value.Authorization);
 
-			var idsQuery = $"where id = ({string.Join(",", gameIds)}); fields name, url, storyline;";
+            var idsQuery = $"where id = ({string.Join(",", gameIds)}); fields name, url, storyline;";
 			var content = new StringContent(idsQuery);
 			content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/plain");
 
