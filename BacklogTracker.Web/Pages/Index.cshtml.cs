@@ -1,5 +1,5 @@
+using BacklogTracker.Application.Data.DTOs;
 using BacklogTracker.Application.Interfaces;
-using BacklogTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -13,7 +13,7 @@ namespace BacklogTracker.Pages
         [BindProperty(SupportsGet = true)]
         public string? SearchTerm { get; set; }
 
-        public Response? GamesResponse { get; set; }
+        public GameCollectionDto? GamesResponse { get; set; }
 
         public IndexModel(IGameService gameService, ILogger<IndexModel> logger)
         {
@@ -21,7 +21,7 @@ namespace BacklogTracker.Pages
             _logger = logger;
         }
 
-        public async void OnPost()
+        public async Task OnPost()
         {            
             string? query = Request.Form["query"];
 

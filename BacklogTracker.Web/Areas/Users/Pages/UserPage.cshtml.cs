@@ -1,7 +1,5 @@
 using BacklogTracker.Application.Data.DTOs;
 using BacklogTracker.Application.Interfaces;
-using BacklogTracker.Infrastructure.Entities;
-using BacklogTracker.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BacklogTracker.Areas.Users.Pages
@@ -12,8 +10,8 @@ namespace BacklogTracker.Areas.Users.Pages
         private readonly IGameService _gameService;
         private readonly ILogger<UserPageModel> _logger;
 
-        public List<Game>? GamesList { get; set; }
-        public List<Game>? CompletedGamesList { get; set; }
+        public List<GameDto>? GamesList { get; set; }
+        public List<GameDto>? CompletedGamesList { get; set; }
 
         public UserPageModel(IUserService userService, IGameService gameService, ILogger<UserPageModel> logger) 
         { 

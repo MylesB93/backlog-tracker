@@ -7,6 +7,7 @@ using BacklogTracker.Infrastructure.Repositories;
 using BacklogTracker.Infrastructure.Entities;
 using BacklogTracker.Infrastructure.Services;
 using BacklogTracker.Infrastructure.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace BacklogTracker
 {
@@ -33,10 +34,17 @@ namespace BacklogTracker
                 .Build();
             builder.Services.Configure<GiantBombConfiguration>(GiantBombConfiguration.GetSection("GiantBombConfiguration"));
 
-            builder.Services.AddControllers()
+			var igdbConfiguration = new ConfigurationBuilder()
+				.SetBasePath(Directory.GetCurrentDirectory())
+				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+				.AddUserSecrets<Program>()
+				.Build();
+			builder.Services.Configure<IGDBConfiguration>(igdbConfiguration.GetSection("IGDBConfiguration"));
+
+			builder.Services.AddControllers()
                 .AddNewtonsoftJson();
 
-            builder.Services.AddScoped<IGameService, GiantBombService>();
+            builder.Services.AddScoped<IGameService, IGDBService>();
             builder.Services.AddScoped<IBacklogService, BacklogService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
@@ -47,7 +55,23 @@ namespace BacklogTracker
 				httpClient.DefaultRequestHeaders.Add("User-Agent", "Backlog Tracker app");
 			});
 
-            var logger = new LoggerConfiguration()
+			builder.Services.AddHttpClient("IGDB", (serviceProvider, httpClient) =>
+			{
+				httpClient.BaseAddress = new Uri("https://api.igdb.com/v4/");
+				
+				// Get IGDB configuration to set headers
+				var igdbConfig = serviceProvider.GetRequiredService<IOptions<IGDBConfiguration>>();
+				if (!string.IsNullOrWhiteSpace(igdbConfig.Value.ClientID))
+				{
+					httpClient.DefaultRequestHeaders.Add("Client-ID", igdbConfig.Value.ClientID);
+				}
+				if (!string.IsNullOrWhiteSpace(igdbConfig.Value.Authorization))
+				{
+					httpClient.DefaultRequestHeaders.Add("Authorization", igdbConfig.Value.Authorization);
+				}
+			});
+
+			var logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(builder.Configuration)
                 .Enrich.FromLogContext()
                 .CreateLogger();
