@@ -61,8 +61,14 @@ namespace BacklogTracker
 				
 				// Get IGDB configuration to set headers
 				var igdbConfig = serviceProvider.GetRequiredService<IOptions<IGDBConfiguration>>();
-				httpClient.DefaultRequestHeaders.Add("Client-ID", igdbConfig.Value.ClientID);
-				httpClient.DefaultRequestHeaders.Add("Authorization", igdbConfig.Value.Authorization);
+				if (!string.IsNullOrWhiteSpace(igdbConfig.Value.ClientID))
+				{
+					httpClient.DefaultRequestHeaders.Add("Client-ID", igdbConfig.Value.ClientID);
+				}
+				if (!string.IsNullOrWhiteSpace(igdbConfig.Value.Authorization))
+				{
+					httpClient.DefaultRequestHeaders.Add("Authorization", igdbConfig.Value.Authorization);
+				}
 			});
 
 			var logger = new LoggerConfiguration()
