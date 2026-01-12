@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using BacklogTracker.Application.Interfaces;
 using BacklogTracker.Infrastructure.Configuration;
+using BacklogTracker.Application.Entities;
 
 namespace BacklogTracker.Infrastructure.Services
 {
@@ -20,21 +21,21 @@ namespace BacklogTracker.Infrastructure.Services
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<Response> GetGamesAsync(string? query)
+        public async Task<GameCollectionDto> GetGamesAsync(string? query)
         {
-            var games = new Response();
+            var games = new GameCollectionDto();
 
             var client = _httpClientFactory.CreateClient("GiantBomb");
 
             var response = client.GetAsync($"/api/search/?api_key={_giantBombConfiguration.Value.GiantBombAPIKey}&query={query}&resources=game&field_list=name,site_detail_url,description,id").Result;
 
-            XmlSerializer xs = new XmlSerializer(typeof(Response));
+            XmlSerializer xs = new XmlSerializer(typeof(GameCollectionDto));
 
             using (StreamReader reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 try
                 {
-                    games = (Response?)xs.Deserialize(reader);
+                    games = (GameCollectionDto?)xs.Deserialize(reader);
                     _logger.LogInformation("Deserialization complete!");
                 }
                 catch (Exception ex)
@@ -45,12 +46,12 @@ namespace BacklogTracker.Infrastructure.Services
 
             _logger.LogInformation("Request complete!");
 
-            return games ?? new Response();
+            return games ?? new GameCollectionDto();
         }
 
-        public async Task<Response> GetUsersGamesAsync(List<string> gameIds)
+        public async Task<GameCollectionDto> GetUsersGamesAsync(List<string> gameIds)
         {
-            var gamesList = new Response();
+            var gamesList = new GameCollectionDto();
 
             var client = _httpClientFactory.CreateClient("GiantBomb");
 
@@ -61,8 +62,8 @@ namespace BacklogTracker.Infrastructure.Services
             using (StreamReader reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 try
-                {
-                    gamesList = (Response?)xs.Deserialize(reader);
+                {   
+                    gamesList = (GameCollectionDto?)xs.Deserialize(reader);
                     _logger.LogInformation("Deserialization complete!");
                 }
                 catch (Exception ex)
@@ -74,7 +75,7 @@ namespace BacklogTracker.Infrastructure.Services
             _logger.LogInformation("Request complete!");
 
 
-            return gamesList ?? new Response();
+            return gamesList ?? new GameCollectionDto();
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using BacklogTracker.Models;
+﻿using BacklogTracker.Application.Entities;
 
 namespace BacklogTracker.Application.Interfaces
 {
 	public interface IGameService
 	{
-		Task<Response> GetGamesAsync(string? query);
-		Task<Response> GetUsersGamesAsync(List<string> gameIds);
+		Task<GameCollectionDto> GetGamesAsync(string? query);
+		Task<GameCollectionDto> GetUsersGamesAsync(List<string> gameIds);
 	}
 }

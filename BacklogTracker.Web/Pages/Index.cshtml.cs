@@ -1,3 +1,4 @@
+using BacklogTracker.Application.Entities;
 using BacklogTracker.Application.Interfaces;
 using BacklogTracker.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ namespace BacklogTracker.Pages
         [BindProperty(SupportsGet = true)]
         public string? SearchTerm { get; set; }
 
-        public Response? GamesResponse { get; set; }
+        public GameCollectionDto? GamesResponse { get; set; }
 
         public IndexModel(IGameService gameService, ILogger<IndexModel> logger)
         {

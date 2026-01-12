@@ -1,4 +1,5 @@
 using BacklogTracker.Application.Data.DTOs;
+using BacklogTracker.Application.Entities;
 using BacklogTracker.Application.Interfaces;
 using BacklogTracker.Infrastructure.Entities;
 using BacklogTracker.Models;
@@ -12,8 +13,8 @@ namespace BacklogTracker.Areas.Users.Pages
         private readonly IGameService _gameService;
         private readonly ILogger<UserPageModel> _logger;
 
-        public List<Game>? GamesList { get; set; }
-        public List<Game>? CompletedGamesList { get; set; }
+        public List<GameDto>? GamesList { get; set; }
+        public List<GameDto>? CompletedGamesList { get; set; }
 
         public UserPageModel(IUserService userService, IGameService gameService, ILogger<UserPageModel> logger) 
         { 

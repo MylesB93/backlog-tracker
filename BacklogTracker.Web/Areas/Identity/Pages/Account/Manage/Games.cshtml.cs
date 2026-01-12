@@ -1,3 +1,4 @@
+using BacklogTracker.Application.Entities;
 using BacklogTracker.Application.Interfaces;
 using BacklogTracker.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,15 +11,15 @@ namespace BacklogTracker.Areas.Identity.Pages.Account.Manage
         private readonly IBacklogService _backlogService;
         private readonly ILogger<GamesModel> _logger;
 
-        public Response Backlog { get; set; }
-        public Response CompletedGames { get; set; }
+        public GameCollectionDto Backlog { get; set; }
+        public GameCollectionDto CompletedGames { get; set; }
 
         public GamesModel(IGameService gameService, IBacklogService backlogService, ILogger<GamesModel> logger) 
         {
             _gameService = gameService;
             _backlogService = backlogService;
-            Backlog = new Response();
-            CompletedGames = new Response();
+            Backlog = new GameCollectionDto();
+            CompletedGames = new GameCollectionDto();
             _logger = logger;
         }
         public async Task OnGet()

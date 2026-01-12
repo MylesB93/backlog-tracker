@@ -1,4 +1,4 @@
-﻿namespace BacklogTracker.Domain.Entities
+﻿namespace BacklogTracker.Application.Entities
 {
 	public class GameCollectionDto
 	{

@@ -1,4 +1,5 @@
-﻿using BacklogTracker.Application.Interfaces;
+﻿using BacklogTracker.Application.Entities;
+using BacklogTracker.Application.Interfaces;
 using BacklogTracker.Infrastructure.Configuration;
 using BacklogTracker.Models;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,7 @@ namespace BacklogTracker.Infrastructure.Services
 			_igdbConfiguration = igdbConfiguration;
 		}
 
-		public async Task<Response> GetGamesAsync(string? query)
+		public async Task<GameCollectionDto> GetGamesAsync(string? query)
 		{
 			var client = _httpClientFactory.CreateClient("IGDB");
 
@@ -33,7 +34,7 @@ namespace BacklogTracker.Infrastructure.Services
 			if (!response.IsSuccessStatusCode)
 			{
 				_logger.LogError($"IGDB API request failed with status code {response.StatusCode}");
-				return new Response();
+				return new GameCollectionDto();
 			}
 
 			try
@@ -44,7 +45,7 @@ namespace BacklogTracker.Infrastructure.Services
 				_logger.LogInformation("Deserialization complete!");
 
 				// Map IGDB games to your existing Response/Game structure
-				var games = igdbGames?.Select(g => new Game
+				var games = igdbGames?.Select(g => new GameDto
 				{
 					Id = g.Id.ToString(),
 					Name = g.Name
@@ -52,16 +53,16 @@ namespace BacklogTracker.Infrastructure.Services
 
 				_logger.LogInformation("Request complete!");
 
-				return new Response { Games = games };
+				return new GameCollectionDto { Games = games };
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError($"Error occurred during deserialization: {ex.Message}");
-				return new Response();
+				return new GameCollectionDto();
 			}
 		}
 
-		public async Task<Response> GetUsersGamesAsync(List<string> gameIds)
+		public async Task<GameCollectionDto> GetUsersGamesAsync(List<string> gameIds)
 		{
 			throw new NotImplementedException();
 
