@@ -28,7 +28,8 @@ namespace BacklogTracker.Infrastructure.Services
             client.DefaultRequestHeaders.Add("Client-ID", _igdbConfiguration.Value.ClientID);
 			client.DefaultRequestHeaders.Add("Authorization", _igdbConfiguration.Value.Authorization);
 
-			var response = await client.GetAsync($"games?fields=name,url,storyline;&search={query};&limit=5;");
+			var encodedQuery = Uri.EscapeDataString(query ?? string.Empty);
+			var response = await client.GetAsync($"games?fields=name,url,storyline;&search={encodedQuery};&limit=5;");
 
 			if (!response.IsSuccessStatusCode)
 			{
