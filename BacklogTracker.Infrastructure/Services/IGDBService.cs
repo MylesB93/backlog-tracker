@@ -41,7 +41,6 @@ namespace BacklogTracker.Infrastructure.Services
 
 				_logger.LogInformation("Deserialization complete!");
 
-				// Map IGDB games to your existing Response/Game structure
 				var games = igdbGames?.Select(g => new GameDto
 				{
 					Id = g.Id.ToString(),
@@ -65,7 +64,6 @@ namespace BacklogTracker.Infrastructure.Services
 		{
 			var client = _httpClientFactory.CreateClient("IGDB");
 
-            // Validate and filter gameIds to ensure only numeric IDs are used in the query
             if (gameIds == null || gameIds.Count == 0)
             {
                 _logger.LogWarning("GetUsersGamesAsync called with no game IDs.");
