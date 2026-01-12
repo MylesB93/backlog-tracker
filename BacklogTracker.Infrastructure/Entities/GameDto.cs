@@ -1,6 +1,6 @@
 ﻿namespace BacklogTracker.Domain.Entities
 {
-	public class Game
+	public class GameDto
 	{
 		public string? Id { get; set; }
 		public string? Name { get; set; }
