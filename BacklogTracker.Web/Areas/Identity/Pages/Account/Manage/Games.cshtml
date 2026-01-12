@@ -26,7 +26,7 @@
 			@foreach (var game in games)
 			{
 				<li class="backlog-item">
-					<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
+					<a href="@game.Url" target="_blank">@game.Name</a>
 					<div class="backlog-btn">
 						<button type="button" class="btn btn-success" data-completed-game-id="@game.Id" onclick="addToCompleted(this,'@user?.Name?.Trim()')" )>✓</button>
 						<button type="button" class="btn btn-danger" data-game-id="@game.Id" onclick="removeFromBacklog(this,'@user?.Name?.Trim()')" )>X</button>
@@ -52,7 +52,7 @@
 			@foreach (var game in completedGames)
 			{
 				<li class="backlog-item">
-					<a href="@game.SiteDetailUrl" target="_blank">@game.Name</a>
+					<a href="@game.Url" target="_blank">@game.Name</a>
 					<div class="backlog-btn">
 						<button type="button" class="btn btn-warning" data-game-id="@game.Id" onclick="moveFromCompletedTobacklog(this,'@user?.Name?.Trim()')" )>Backlog</button>
 					</div>

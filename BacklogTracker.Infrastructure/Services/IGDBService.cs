@@ -29,7 +29,7 @@ namespace BacklogTracker.Infrastructure.Services
 			client.DefaultRequestHeaders.Add("Client-ID", "xmq9cokqifli4gcm219wsjxbj9xp63");
 			client.DefaultRequestHeaders.Add("Authorization", "Bearer 36nyegwmx2q11ves4x9ap4p05uzrp2");
 
-			var response = await client.GetAsync($"games?fields=name,url;&search={query};&limit=5;");
+			var response = await client.GetAsync($"games?fields=name,url,storyline;&search={query};&limit=5;");
 
 			if (!response.IsSuccessStatusCode)
 			{
@@ -48,8 +48,10 @@ namespace BacklogTracker.Infrastructure.Services
 				var games = igdbGames?.Select(g => new GameDto
 				{
 					Id = g.Id.ToString(),
-					Name = g.Name
-				}).ToList();
+					Name = g.Name,
+					Url = g.Url,
+					Description = g.Storyline
+                }).ToList();
 
 				_logger.LogInformation("Request complete!");
 
