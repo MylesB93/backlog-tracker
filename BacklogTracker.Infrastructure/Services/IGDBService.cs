@@ -66,33 +66,48 @@ namespace BacklogTracker.Infrastructure.Services
 
 		public async Task<GameCollectionDto> GetUsersGamesAsync(List<string> gameIds)
 		{
-			throw new NotImplementedException();
+			var client = _httpClientFactory.CreateClient("IGDB");
 
-			//var gamesList = new Response();
+			//TODO: Move headers to secrets
+			client.DefaultRequestHeaders.Add("Client-ID", "xmq9cokqifli4gcm219wsjxbj9xp63");
+			client.DefaultRequestHeaders.Add("Authorization", "Bearer 36nyegwmx2q11ves4x9ap4p05uzrp2");
 
-			//var client = _httpClientFactory.CreateClient("GiantBomb");
+			var idsQuery = $"where id = ({string.Join(",", gameIds)}); fields name, url, storyline;";
+			var content = new StringContent(idsQuery);
+			content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/plain");
 
-			//var response = await client.GetAsync($"/api/games/?api_key={_igdbConfiguration.Value.GiantBombAPIKey}&filter=id:{string.Join("|", gameIds)}&field_list=name,site_detail_url,description,guid,id");
+			var response = await client.PostAsync("games", content);
 
-			//XmlSerializer xs = new XmlSerializer(typeof(Response));
+			if (!response.IsSuccessStatusCode)
+			{
+				_logger.LogError($"IGDB API request failed with status code {response.StatusCode}");
+				return new GameCollectionDto();
+			}
 
-			//using (StreamReader reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
-			//{
-			//	try
-			//	{
-			//		gamesList = (Response?)xs.Deserialize(reader);
-			//		_logger.LogInformation("Deserialization complete!");
-			//	}
-			//	catch (Exception ex)
-			//	{
-			//		_logger.LogError($"Error occurred during deserialization: {ex.Message}");
-			//	}
-			//}
+			try
+			{
+				var jsonString = await response.Content.ReadAsStringAsync();
+				var igdbGames = JsonSerializer.Deserialize<List<IGDBGame>>(jsonString);
 
-			//_logger.LogInformation("Request complete!");
+				_logger.LogInformation("Deserialization complete!");
 
+				var games = igdbGames?.Select(g => new GameDto
+				{
+					Id = g.Id.ToString(),
+					Name = g.Name,
+					Url = g.Url,
+					Description = g.Storyline
+				}).ToList();
 
-			//return gamesList ?? new Response();
+				_logger.LogInformation("Request complete!");
+
+				return new GameCollectionDto { Games = games };
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError($"Error occurred during deserialization: {ex.Message}");
+				return new GameCollectionDto();
+			}
 		}
 	}
 }
