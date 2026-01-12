@@ -75,7 +75,33 @@ namespace BacklogTracker.Infrastructure.Services
 			client.DefaultRequestHeaders.Add("Client-ID", _igdbConfiguration.Value.ClientID);
 			client.DefaultRequestHeaders.Add("Authorization", _igdbConfiguration.Value.Authorization);
 
-            var idsQuery = $"where id = ({string.Join(",", gameIds)}); fields name, url, storyline;";
+            // Validate and filter gameIds to ensure only numeric IDs are used in the query
+            if (gameIds == null || gameIds.Count == 0)
+            {
+                _logger.LogWarning("GetUsersGamesAsync called with no game IDs.");
+                return new GameCollectionDto();
+            }
+
+            var numericIds = new List<string>();
+            foreach (var id in gameIds)
+            {
+                if (!string.IsNullOrWhiteSpace(id) && long.TryParse(id, out _))
+                {
+                    numericIds.Add(id.Trim());
+                }
+                else
+                {
+                    _logger.LogWarning("Ignoring non-numeric or invalid game ID value in GetUsersGamesAsync.");
+                }
+            }
+
+            if (numericIds.Count == 0)
+            {
+                _logger.LogWarning("No valid numeric game IDs provided to GetUsersGamesAsync.");
+                return new GameCollectionDto();
+            }
+
+            var idsQuery = $"where id = ({string.Join(",", numericIds)}); fields name, url, storyline;";
 			var content = new StringContent(idsQuery);
 			content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/plain");
 
