@@ -1,4 +1,4 @@
-﻿namespace BacklogTracker.Application.Entities
+﻿namespace BacklogTracker.Application.Data.DTOs
 {
 	public class GameDto
 	{
