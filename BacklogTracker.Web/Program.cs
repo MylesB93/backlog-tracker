@@ -71,7 +71,7 @@ namespace BacklogTracker
 				
 				// Get IGDB configuration to set headers
 				var igdbConfig = serviceProvider.GetRequiredService<IOptions<IGDBConfiguration>>();
-				if (!string.IsNullOrWhiteSpace(igdbConfig.Value.ClientID))
+                if (!string.IsNullOrWhiteSpace(igdbConfig.Value.ClientID))
 				{
 					httpClient.DefaultRequestHeaders.Add("Client-ID", igdbConfig.Value.ClientID);
 				}
@@ -105,6 +105,26 @@ namespace BacklogTracker
             app.MapRazorPages();
 
             app.MapControllers();
+
+            app.MapGet("/diag/env", (HttpRequest req, IConfiguration config) =>
+            {
+                var key = Environment.GetEnvironmentVariable("DIAG_KEY");
+                if (string.IsNullOrWhiteSpace(key) || req.Headers["X-Diag-Key"] != key)
+                    return Results.Unauthorized();
+
+                var clientId = config["IGDBConfiguration:ClientID"] ?? "";
+                var auth = config["IGDBConfiguration:Authorization"] ?? "";
+
+                return Results.Json(new
+                {
+                    HasClientId = !string.IsNullOrWhiteSpace(clientId),
+                    HasAuth = !string.IsNullOrWhiteSpace(auth),
+                    AuthStartsWithBearer = auth.Trim().StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase),
+                    ClientIdPrefix = clientId.Length >= 4 ? clientId[..4] : clientId, // partial, not full
+                    AuthPrefix = auth.Length >= 10 ? auth[..10] : auth              // still not ideal, but better
+                });
+            });
+
 
             app.Run();
         }
