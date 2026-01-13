@@ -29,7 +29,7 @@ namespace BacklogTracker.Pages
             { 
                 try
                 {
-					_logger.LogInformation("Fetching games from GiantBomb API...");
+					_logger.LogInformation("Fetching games from games API...");
 					GamesResponse = await _gameService.GetGamesAsync(Request.Form["query"]);
                     ViewData["NoResults"] = GamesResponse == null ? "" : "No Games Matching The Query!";
 				}
