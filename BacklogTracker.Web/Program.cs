@@ -17,6 +17,16 @@ namespace BacklogTracker
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Host.UseSerilog((context, services, configuration) =>
+            {
+                configuration
+                    .ReadFrom.Configuration(context.Configuration)
+                    .ReadFrom.Services(services)
+                    .Enrich.FromLogContext();
+            });
+
+            builder.Logging.ClearProviders();
+
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -69,15 +79,7 @@ namespace BacklogTracker
 				{
 					httpClient.DefaultRequestHeaders.Add("Authorization", igdbConfig.Value.Authorization);
 				}
-			});
-
-			var logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(builder.Configuration)
-                .Enrich.FromLogContext()
-                .CreateLogger();
-
-            builder.Logging.ClearProviders();
-            builder.Logging.AddSerilog(logger);
+			});            
 
 			var app = builder.Build();
 
