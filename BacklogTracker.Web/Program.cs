@@ -6,6 +6,7 @@ using BacklogTracker.Infrastructure.Entities;
 using BacklogTracker.Infrastructure.Repositories;
 using BacklogTracker.Infrastructure.Services;
 using BacklogTracker.Services;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -75,6 +76,12 @@ namespace BacklogTracker
 
             builder.Services.AddHttpClient();
             builder.Services.AddTransient<IEmailSender, ResendEmailSender>();
+
+            var keysPath = Path.Combine(builder.Environment.ContentRootPath, "App_Data", "DataProtectionKeys");
+
+            builder.Services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(keysPath))
+                .SetApplicationName("BacklogTracker");
 
             var app = builder.Build();
 
