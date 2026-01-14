@@ -1,13 +1,15 @@
-using BacklogTracker.Infrastructure.Data;
-using BacklogTracker.Services;
-using Microsoft.EntityFrameworkCore;
-using Serilog;
 using BacklogTracker.Application.Interfaces;
-using BacklogTracker.Infrastructure.Repositories;
-using BacklogTracker.Infrastructure.Entities;
-using BacklogTracker.Infrastructure.Services;
 using BacklogTracker.Infrastructure.Configuration;
+using BacklogTracker.Infrastructure.Data;
+using BacklogTracker.Infrastructure.Email;
+using BacklogTracker.Infrastructure.Entities;
+using BacklogTracker.Infrastructure.Repositories;
+using BacklogTracker.Infrastructure.Services;
+using BacklogTracker.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 namespace BacklogTracker
 {
@@ -69,9 +71,12 @@ namespace BacklogTracker
 				{
 					httpClient.DefaultRequestHeaders.Add("Authorization", igdbConfig.Value.Authorization);
 				}
-			});            
+			});
 
-			var app = builder.Build();
+            builder.Services.AddHttpClient();
+            builder.Services.AddTransient<IEmailSender, ResendEmailSender>();
+
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
