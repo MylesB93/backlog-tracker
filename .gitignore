@@ -2,3 +2,5 @@
 **/bin/
 **/obj/
 /BacklogTracker.Web/Logs/
+/BacklogTracker.Web/Properties/PublishProfiles
+/BacklogTracker.Web/BacklogTracker.Web.csproj.user

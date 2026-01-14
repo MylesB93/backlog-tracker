@@ -28,7 +28,9 @@ namespace BacklogTracker.Infrastructure.Services
 			var encodedQuery = Uri.EscapeDataString(query ?? string.Empty);
 			var response = await client.GetAsync($"games?fields=name,url,storyline;&search={encodedQuery};&limit={_igdbConfiguration.Value.GameLimit};");
 
-			if (!response.IsSuccessStatusCode)
+            var body = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
 			{
 				_logger.LogError($"IGDB API request failed with status code {response.StatusCode}");
 				return new GameCollectionDto();

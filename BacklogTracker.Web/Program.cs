@@ -37,21 +37,11 @@ namespace BacklogTracker
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddRazorPages();
 
-            var GiantBombConfiguration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddUserSecrets<Program>()
-                .Build();
-            builder.Services.Configure<GiantBombConfiguration>(GiantBombConfiguration.GetSection("GiantBombConfiguration"));
+            builder.Services.Configure<GiantBombConfiguration>(builder.Configuration.GetSection("GiantBombConfiguration"));
 
-			var igdbConfiguration = new ConfigurationBuilder()
-				.SetBasePath(Directory.GetCurrentDirectory())
-				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-				.AddUserSecrets<Program>()
-				.Build();
-			builder.Services.Configure<IGDBConfiguration>(igdbConfiguration.GetSection("IGDBConfiguration"));
+            builder.Services.Configure<IGDBConfiguration>(builder.Configuration.GetSection("IGDBConfiguration"));
 
-			builder.Services.AddControllers()
+            builder.Services.AddControllers()
                 .AddNewtonsoftJson();
 
             builder.Services.AddScoped<IGameService, IGDBService>();
@@ -71,7 +61,7 @@ namespace BacklogTracker
 				
 				// Get IGDB configuration to set headers
 				var igdbConfig = serviceProvider.GetRequiredService<IOptions<IGDBConfiguration>>();
-				if (!string.IsNullOrWhiteSpace(igdbConfig.Value.ClientID))
+                if (!string.IsNullOrWhiteSpace(igdbConfig.Value.ClientID))
 				{
 					httpClient.DefaultRequestHeaders.Add("Client-ID", igdbConfig.Value.ClientID);
 				}
@@ -104,7 +94,7 @@ namespace BacklogTracker
 
             app.MapRazorPages();
 
-            app.MapControllers();
+            app.MapControllers();           
 
             app.Run();
         }
