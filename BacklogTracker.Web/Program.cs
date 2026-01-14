@@ -110,8 +110,8 @@ namespace BacklogTracker
                     HasClientId = !string.IsNullOrWhiteSpace(clientId),
                     HasAuth = !string.IsNullOrWhiteSpace(auth),
                     AuthStartsWithBearer = auth.Trim().StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase),
-                    ClientIdPrefix = clientId.Length >= 4 ? clientId[..4] : clientId, // partial, not full
-                    AuthPrefix = auth.Length >= 10 ? auth[..10] : auth              // still not ideal, but better
+                    ClientIdPrefix = clientId.Length >= 4 ? clientId[..4] : clientId,
+                    AuthPrefix = auth.Length >= 10 ? auth[..10] : auth
                 });
             });
 
