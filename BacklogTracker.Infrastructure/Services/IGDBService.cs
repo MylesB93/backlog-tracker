@@ -30,9 +30,6 @@ namespace BacklogTracker.Infrastructure.Services
 
             var body = await response.Content.ReadAsStringAsync();
 
-            _logger.LogInformation("IGDB status={StatusCode}", (int)response.StatusCode);
-            _logger.LogInformation("IGDB body(first500)={Body}", body[..Math.Min(500, body.Length)]);
-
             if (!response.IsSuccessStatusCode)
 			{
 				_logger.LogError($"IGDB API request failed with status code {response.StatusCode}");

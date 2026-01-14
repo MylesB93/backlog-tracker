@@ -94,27 +94,7 @@ namespace BacklogTracker
 
             app.MapRazorPages();
 
-            app.MapControllers();
-
-            app.MapGet("/diag/env", (HttpRequest req, IConfiguration config) =>
-            {
-                var key = Environment.GetEnvironmentVariable("DIAG_KEY");
-                if (string.IsNullOrWhiteSpace(key) || req.Headers["X-Diag-Key"] != key)
-                    return Results.Unauthorized();
-
-                var clientId = config["IGDBConfiguration:ClientID"] ?? "";
-                var auth = config["IGDBConfiguration:Authorization"] ?? "";
-
-                return Results.Json(new
-                {
-                    HasClientId = !string.IsNullOrWhiteSpace(clientId),
-                    HasAuth = !string.IsNullOrWhiteSpace(auth),
-                    AuthStartsWithBearer = auth.Trim().StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase),
-                    ClientIdPrefix = clientId.Length >= 4 ? clientId[..4] : clientId,
-                    AuthPrefix = auth.Length >= 10 ? auth[..10] : auth
-                });
-            });
-
+            app.MapControllers();           
 
             app.Run();
         }
