@@ -37,21 +37,11 @@ namespace BacklogTracker
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddRazorPages();
 
-            var GiantBombConfiguration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddUserSecrets<Program>()
-                .Build();
-            builder.Services.Configure<GiantBombConfiguration>(GiantBombConfiguration.GetSection("GiantBombConfiguration"));
+            builder.Services.Configure<GiantBombConfiguration>(builder.Configuration.GetSection("GiantBombConfiguration"));
 
-			var igdbConfiguration = new ConfigurationBuilder()
-				.SetBasePath(Directory.GetCurrentDirectory())
-				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-				.AddUserSecrets<Program>()
-				.Build();
-			builder.Services.Configure<IGDBConfiguration>(igdbConfiguration.GetSection("IGDBConfiguration"));
+            builder.Services.Configure<IGDBConfiguration>(builder.Configuration.GetSection("IGDBConfiguration"));
 
-			builder.Services.AddControllers()
+            builder.Services.AddControllers()
                 .AddNewtonsoftJson();
 
             builder.Services.AddScoped<IGameService, IGDBService>();
