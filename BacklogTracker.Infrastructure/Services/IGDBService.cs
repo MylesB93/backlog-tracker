@@ -2,6 +2,7 @@
 using BacklogTracker.Application.Interfaces;
 using BacklogTracker.Infrastructure.Configuration;
 using BacklogTracker.Models;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
@@ -13,19 +14,34 @@ namespace BacklogTracker.Infrastructure.Services
 		private readonly ILogger<IGDBService> _logger;
 		private IOptions<IGDBConfiguration> _igdbConfiguration;
 		private readonly IHttpClientFactory _httpClientFactory;
+		private readonly IMemoryCache _cache;
 
-		public IGDBService(ILogger<IGDBService> logger, IOptions<IGDBConfiguration> igdbConfiguration, IHttpClientFactory httpClientFactory) 
+		public IGDBService(ILogger<IGDBService> logger, IOptions<IGDBConfiguration> igdbConfiguration, IHttpClientFactory httpClientFactory, IMemoryCache cache) 
 		{
 			_logger = logger;
 			_httpClientFactory = httpClientFactory;
 			_igdbConfiguration = igdbConfiguration;
+			_cache = cache;
 		}
 
 		public async Task<GameCollectionDto> GetGamesAsync(string? query)
 		{
+			if (string.IsNullOrWhiteSpace(query))
+			{
+				return new GameCollectionDto();
+			}
+
+			var cacheKey = $"igdb_games_{query.ToLowerInvariant()}";
+
+			if (_cache.TryGetValue(cacheKey, out GameCollectionDto? cachedResult) && cachedResult != null)
+			{
+				_logger.LogInformation($"Returning cached results for query: {query}");
+				return cachedResult;
+			}
+
 			var client = _httpClientFactory.CreateClient("IGDB");
 
-			var encodedQuery = Uri.EscapeDataString(query ?? string.Empty);
+			var encodedQuery = Uri.EscapeDataString(query);
 			var response = await client.GetAsync($"games?fields=name,url,storyline;&search={encodedQuery};&limit={_igdbConfiguration.Value.GameLimit};");
 
             var body = await response.Content.ReadAsStringAsync();
@@ -51,9 +67,18 @@ namespace BacklogTracker.Infrastructure.Services
 					Description = g.Storyline
                 }).ToList();
 
+				var result = new GameCollectionDto { Games = games };
+
+				var cacheOptions = new MemoryCacheEntryOptions
+				{
+					AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1)
+				};
+
+				_cache.Set(cacheKey, result, cacheOptions);
+
 				_logger.LogInformation("Request complete!");
 
-				return new GameCollectionDto { Games = games };
+				return result;
 			}
 			catch (Exception ex)
 			{
@@ -66,32 +91,32 @@ namespace BacklogTracker.Infrastructure.Services
 		{
 			var client = _httpClientFactory.CreateClient("IGDB");
 
-            if (gameIds == null || gameIds.Count == 0)
-            {
-                _logger.LogWarning("GetUsersGamesAsync called with no game IDs.");
-                return new GameCollectionDto();
-            }
+			if (gameIds == null || gameIds.Count == 0)
+			{
+				_logger.LogWarning("GetUsersGamesAsync called with no game IDs.");
+				return new GameCollectionDto();
+			}
 
-            var numericIds = new List<string>();
-            foreach (var id in gameIds)
-            {
-                if (!string.IsNullOrWhiteSpace(id) && long.TryParse(id, out _))
-                {
-                    numericIds.Add(id.Trim());
-                }
-                else
-                {
-                    _logger.LogWarning("Ignoring non-numeric or invalid game ID value in GetUsersGamesAsync.");
-                }
-            }
+			var numericIds = new List<string>();
+			foreach (var id in gameIds)
+			{
+				if (!string.IsNullOrWhiteSpace(id) && long.TryParse(id, out _))
+				{
+					numericIds.Add(id.Trim());
+				}
+				else
+				{
+					_logger.LogWarning("Ignoring non-numeric or invalid game ID value in GetUsersGamesAsync.");
+				}
+			}
 
-            if (numericIds.Count == 0)
-            {
-                _logger.LogWarning("No valid numeric game IDs provided to GetUsersGamesAsync.");
-                return new GameCollectionDto();
-            }
+			if (numericIds.Count == 0)
+			{
+				_logger.LogWarning("No valid numeric game IDs provided to GetUsersGamesAsync.");
+				return new GameCollectionDto();
+			}
 
-            var idsQuery = $"where id = ({string.Join(",", numericIds)}); fields name, url, storyline;";
+			var idsQuery = $"where id = ({string.Join(",", numericIds)}); fields name, url, storyline;";
 			var content = new StringContent(idsQuery);
 			content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/plain");
 
