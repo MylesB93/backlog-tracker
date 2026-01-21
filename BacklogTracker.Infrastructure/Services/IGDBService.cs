@@ -5,6 +5,8 @@ using BacklogTracker.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 
 namespace BacklogTracker.Infrastructure.Services
@@ -96,12 +98,12 @@ namespace BacklogTracker.Infrastructure.Services
 				return new GameCollectionDto();
 			}
 
-			var numericIds = new List<string>();
+			var numericIds = new List<long>();
 			foreach (var id in gameIds)
 			{
-				if (!string.IsNullOrWhiteSpace(id) && long.TryParse(id, out _))
+				if (!string.IsNullOrWhiteSpace(id) && long.TryParse(id, out var numericId))
 				{
-					numericIds.Add(id.Trim());
+					numericIds.Add(numericId);
 				}
 			}
 
@@ -110,14 +112,22 @@ namespace BacklogTracker.Infrastructure.Services
 				return new GameCollectionDto();
 			}
 
-			var cacheKey = $"igdb_users_games_{string.Join("_", numericIds)}";
+			// Sort IDs to ensure consistent cache key for the same set of IDs regardless of order
+			var sortedIds = numericIds.OrderBy(id => id).ToList();
+			
+			// Create a hash of the sorted IDs to keep cache key length bounded
+			var idsString = string.Join(",", sortedIds);
+			var hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(idsString));
+			var hash = Convert.ToHexString(hashBytes).ToLowerInvariant();
+			
+			var cacheKey = $"igdb_users_games_{hash}";
 
 			if (_cache.TryGetValue(cacheKey, out GameCollectionDto? cachedResult) && cachedResult != null)
 			{
 				return cachedResult;
 			}
 
-			var idsQuery = $"where id = ({string.Join(",", numericIds)}); fields name, url, storyline;";
+			var idsQuery = $"where id = ({string.Join(",", sortedIds)}); fields name, url, storyline;";
 			var content = new StringContent(idsQuery);
 			content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/plain");
 
