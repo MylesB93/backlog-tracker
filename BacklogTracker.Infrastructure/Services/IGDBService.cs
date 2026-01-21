@@ -93,7 +93,6 @@ namespace BacklogTracker.Infrastructure.Services
 
 			if (gameIds == null || gameIds.Count == 0)
 			{
-				_logger.LogWarning("GetUsersGamesAsync called with no game IDs.");
 				return new GameCollectionDto();
 			}
 
@@ -104,16 +103,18 @@ namespace BacklogTracker.Infrastructure.Services
 				{
 					numericIds.Add(id.Trim());
 				}
-				else
-				{
-					_logger.LogWarning("Ignoring non-numeric or invalid game ID value in GetUsersGamesAsync.");
-				}
 			}
 
 			if (numericIds.Count == 0)
 			{
-				_logger.LogWarning("No valid numeric game IDs provided to GetUsersGamesAsync.");
 				return new GameCollectionDto();
+			}
+
+			var cacheKey = $"igdb_users_games_{string.Join("_", numericIds)}";
+
+			if (_cache.TryGetValue(cacheKey, out GameCollectionDto? cachedResult) && cachedResult != null)
+			{
+				return cachedResult;
 			}
 
 			var idsQuery = $"where id = ({string.Join(",", numericIds)}); fields name, url, storyline;";
@@ -124,7 +125,6 @@ namespace BacklogTracker.Infrastructure.Services
 
 			if (!response.IsSuccessStatusCode)
 			{
-				_logger.LogError($"IGDB API request failed with status code {response.StatusCode}");
 				return new GameCollectionDto();
 			}
 
@@ -132,8 +132,6 @@ namespace BacklogTracker.Infrastructure.Services
 			{
 				var jsonString = await response.Content.ReadAsStringAsync();
 				var igdbGames = JsonSerializer.Deserialize<List<IGDBGame>>(jsonString);
-
-				_logger.LogInformation("Deserialization complete!");
 
 				var games = igdbGames?.Select(g => new GameDto
 				{
@@ -143,13 +141,19 @@ namespace BacklogTracker.Infrastructure.Services
 					Description = g.Storyline
 				}).ToList();
 
-				_logger.LogInformation("Request complete!");
+				var result = new GameCollectionDto { Games = games };
 
-				return new GameCollectionDto { Games = games };
+				var cacheOptions = new MemoryCacheEntryOptions
+				{
+					AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1)
+				};
+
+				_cache.Set(cacheKey, result, cacheOptions);
+
+				return result;
 			}
-			catch (Exception ex)
+			catch
 			{
-				_logger.LogError($"Error occurred during deserialization: {ex.Message}");
 				return new GameCollectionDto();
 			}
 		}
