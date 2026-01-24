@@ -47,6 +47,8 @@ namespace BacklogTracker
             builder.Services.AddControllers()
                 .AddNewtonsoftJson();
 
+            builder.Services.AddMemoryCache();
+
             builder.Services.AddScoped<IGameService, IGDBService>();
             builder.Services.AddScoped<IBacklogService, BacklogService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();

@@ -2,8 +2,11 @@
 using BacklogTracker.Application.Interfaces;
 using BacklogTracker.Infrastructure.Configuration;
 using BacklogTracker.Models;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 
 namespace BacklogTracker.Infrastructure.Services
@@ -13,19 +16,34 @@ namespace BacklogTracker.Infrastructure.Services
 		private readonly ILogger<IGDBService> _logger;
 		private IOptions<IGDBConfiguration> _igdbConfiguration;
 		private readonly IHttpClientFactory _httpClientFactory;
+		private readonly IMemoryCache _cache;
 
-		public IGDBService(ILogger<IGDBService> logger, IOptions<IGDBConfiguration> igdbConfiguration, IHttpClientFactory httpClientFactory) 
+		public IGDBService(ILogger<IGDBService> logger, IOptions<IGDBConfiguration> igdbConfiguration, IHttpClientFactory httpClientFactory, IMemoryCache cache) 
 		{
 			_logger = logger;
 			_httpClientFactory = httpClientFactory;
 			_igdbConfiguration = igdbConfiguration;
+			_cache = cache;
 		}
 
 		public async Task<GameCollectionDto> GetGamesAsync(string? query)
 		{
+			if (string.IsNullOrWhiteSpace(query))
+			{
+				return new GameCollectionDto();
+			}
+
+			var cacheKey = $"igdb_games_{query.ToLowerInvariant()}";
+
+			if (_cache.TryGetValue(cacheKey, out GameCollectionDto? cachedResult) && cachedResult != null)
+			{
+				_logger.LogInformation($"Returning cached results for query: {query}");
+				return cachedResult;
+			}
+
 			var client = _httpClientFactory.CreateClient("IGDB");
 
-			var encodedQuery = Uri.EscapeDataString(query ?? string.Empty);
+			var encodedQuery = Uri.EscapeDataString(query);
 			var response = await client.GetAsync($"games?fields=name,url,storyline;&search={encodedQuery};&limit={_igdbConfiguration.Value.GameLimit};");
 
             var body = await response.Content.ReadAsStringAsync();
@@ -51,9 +69,18 @@ namespace BacklogTracker.Infrastructure.Services
 					Description = g.Storyline
                 }).ToList();
 
+				var result = new GameCollectionDto { Games = games };
+
+				var cacheOptions = new MemoryCacheEntryOptions
+				{
+					AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1)
+				};
+
+				_cache.Set(cacheKey, result, cacheOptions);
+
 				_logger.LogInformation("Request complete!");
 
-				return new GameCollectionDto { Games = games };
+				return result;
 			}
 			catch (Exception ex)
 			{
@@ -66,32 +93,39 @@ namespace BacklogTracker.Infrastructure.Services
 		{
 			var client = _httpClientFactory.CreateClient("IGDB");
 
-            if (gameIds == null || gameIds.Count == 0)
-            {
-                _logger.LogWarning("GetUsersGamesAsync called with no game IDs.");
-                return new GameCollectionDto();
-            }
+			if (gameIds == null || gameIds.Count == 0)
+			{
+				return new GameCollectionDto();
+			}
 
-            var numericIds = new List<string>();
-            foreach (var id in gameIds)
-            {
-                if (!string.IsNullOrWhiteSpace(id) && long.TryParse(id, out _))
-                {
-                    numericIds.Add(id.Trim());
-                }
-                else
-                {
-                    _logger.LogWarning("Ignoring non-numeric or invalid game ID value in GetUsersGamesAsync.");
-                }
-            }
+			var numericIds = new List<long>();
+			foreach (var id in gameIds)
+			{
+				if (!string.IsNullOrWhiteSpace(id) && long.TryParse(id, out var numericId))
+				{
+					numericIds.Add(numericId);
+				}
+			}
 
-            if (numericIds.Count == 0)
-            {
-                _logger.LogWarning("No valid numeric game IDs provided to GetUsersGamesAsync.");
-                return new GameCollectionDto();
-            }
+			if (numericIds.Count == 0)
+			{
+				return new GameCollectionDto();
+			}
 
-            var idsQuery = $"where id = ({string.Join(",", numericIds)}); fields name, url, storyline;";
+			var sortedIds = numericIds.OrderBy(id => id).ToList();
+			
+			var idsString = string.Join(",", sortedIds);
+			var hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(idsString));
+			var hash = Convert.ToHexString(hashBytes).ToLowerInvariant();
+			
+			var cacheKey = $"igdb_users_games_{hash}";
+
+			if (_cache.TryGetValue(cacheKey, out GameCollectionDto? cachedResult) && cachedResult != null)
+			{
+				return cachedResult;
+			}
+
+			var idsQuery = $"where id = ({string.Join(",", sortedIds)}); fields name, url, storyline;";
 			var content = new StringContent(idsQuery);
 			content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/plain");
 
@@ -99,7 +133,6 @@ namespace BacklogTracker.Infrastructure.Services
 
 			if (!response.IsSuccessStatusCode)
 			{
-				_logger.LogError($"IGDB API request failed with status code {response.StatusCode}");
 				return new GameCollectionDto();
 			}
 
@@ -107,8 +140,6 @@ namespace BacklogTracker.Infrastructure.Services
 			{
 				var jsonString = await response.Content.ReadAsStringAsync();
 				var igdbGames = JsonSerializer.Deserialize<List<IGDBGame>>(jsonString);
-
-				_logger.LogInformation("Deserialization complete!");
 
 				var games = igdbGames?.Select(g => new GameDto
 				{
@@ -118,13 +149,19 @@ namespace BacklogTracker.Infrastructure.Services
 					Description = g.Storyline
 				}).ToList();
 
-				_logger.LogInformation("Request complete!");
+				var result = new GameCollectionDto { Games = games };
 
-				return new GameCollectionDto { Games = games };
+				var cacheOptions = new MemoryCacheEntryOptions
+				{
+					AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1)
+				};
+
+				_cache.Set(cacheKey, result, cacheOptions);
+
+				return result;
 			}
-			catch (Exception ex)
+			catch
 			{
-				_logger.LogError($"Error occurred during deserialization: {ex.Message}");
 				return new GameCollectionDto();
 			}
 		}
