@@ -112,10 +112,8 @@ namespace BacklogTracker.Infrastructure.Services
 				return new GameCollectionDto();
 			}
 
-			// Sort IDs to ensure consistent cache key for the same set of IDs regardless of order
 			var sortedIds = numericIds.OrderBy(id => id).ToList();
 			
-			// Create a hash of the sorted IDs to keep cache key length bounded
 			var idsString = string.Join(",", sortedIds);
 			var hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(idsString));
 			var hash = Convert.ToHexString(hashBytes).ToLowerInvariant();
