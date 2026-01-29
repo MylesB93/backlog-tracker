@@ -29,15 +29,13 @@ jobs:
         shell: powershell
         run: |
           choco install webdeploy -y
-          & "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe" --% -version
+          $msdeploy = "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe"
+          if (!(Test-Path $msdeploy)) { throw "msdeploy.exe not found at $msdeploy" }
+          (Get-Item $msdeploy).VersionInfo | Format-List -Property FileVersion,ProductVersion
 
       - name: Deploy via msdeploy
         shell: powershell
         run: |
           $msdeploy = "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe"
 
-          & $msdeploy `
-            -verb:sync `
-            -source:contentPath="$(Resolve-Path .\publish)" `
-            -dest:contentPath="${{ secrets.MSDEPLOY_SITE_NAME }}",computerName="${{ secrets.MSDEPLOY_ENDPOINT }}",userName="${{ secrets.MSDEPLOY_USERNAME }}",password="${{ secrets.MSDEPLOY_PASSWORD }}",authType="Basic" `
-            -allowUntrusted
+          cmd /c ""$msdeploy" -verb:sync -source:contentPath=publish -dest:contentPath=${{ secrets.MSDEPLOY_SITE_NAME }},computerName=${{ secrets.MSDEPLOY_ENDPOINT }},userName=${{ secrets.MSDEPLOY_USERNAME }},password=${{ secrets.MSDEPLOY_PASSWORD }},authType=Basic -allowUntrusted"
