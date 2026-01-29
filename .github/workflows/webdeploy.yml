@@ -23,7 +23,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish ./YourProject/YourProject.csproj -c Release -o ./publish
+        run: dotnet publish BacklogTracker.Web/BacklogTracker.Web.csproj -c Release -o ./publish
 
       - name: Install Web Deploy (msdeploy)
         shell: powershell
