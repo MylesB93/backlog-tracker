@@ -38,4 +38,8 @@ jobs:
         run: |
           $msdeploy = "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe"
 
-          cmd /c ""$msdeploy" -verb:sync -source:contentPath=publish -dest:contentPath=${{ secrets.MSDEPLOY_SITE_NAME }},computerName=${{ secrets.MSDEPLOY_ENDPOINT }},userName=${{ secrets.MSDEPLOY_USERNAME }},password=${{ secrets.MSDEPLOY_PASSWORD }},authType=Basic -allowUntrusted"
+          & $msdeploy `
+            "-verb:sync" `
+            "-source:contentPath=$(Resolve-Path ./publish)" `
+            "-dest:contentPath=${{ secrets.MSDEPLOY_SITE_NAME }},computerName=${{ secrets.MSDEPLOY_ENDPOINT }},userName=${{ secrets.MSDEPLOY_USERNAME }},password=${{ secrets.MSDEPLOY_PASSWORD }},authType=Basic" `
+            "-allowUntrusted"
