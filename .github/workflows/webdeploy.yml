@@ -1,34 +1,43 @@
-name: Build and Deploy to IIS via Web Deploy
+name: Deploy to myASP.net (Web Deploy)
 
 on:
   push:
-    branches:
-      - master
+    branches: ["master"]
 
 jobs:
   build-and-deploy:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 9.0.x
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Restore
+        run: dotnet restore
 
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
 
-    - name: Publish
-      run: dotnet publish BacklogTracker.Web/BacklogTracker.Web.csproj --configuration Release --output ./publish
+      - name: Publish
+        run: dotnet publish ./YourProject/YourProject.csproj -c Release -o ./publish
 
-    - name: Deploy to IIS via Web Deploy
-      uses: microsoft/webapps-deploy@v3
-      with:
-        publish-profile: ${{ secrets.WEBDEPLOY_PUBLISH_PROFILE }}
-        package: ./publish
+      - name: Install Web Deploy (msdeploy)
+        shell: powershell
+        run: |
+          choco install webdeploy -y
+          & "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe" -version
+
+      - name: Deploy via msdeploy
+        shell: powershell
+        run: |
+          $msdeploy = "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe"
+
+          & $msdeploy `
+            -verb:sync `
+            -source:contentPath="$(Resolve-Path .\publish)" `
+            -dest:contentPath="${{ secrets.MSDEPLOY_SITE_NAME }}",computerName="${{ secrets.MSDEPLOY_ENDPOINT }}",userName="${{ secrets.MSDEPLOY_USERNAME }}",password="${{ secrets.MSDEPLOY_PASSWORD }}",authType="Basic" `
+            -allowUntrusted
