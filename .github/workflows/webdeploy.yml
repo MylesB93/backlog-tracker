@@ -42,4 +42,7 @@ jobs:
             "-verb:sync" `
             "-source:contentPath=$(Resolve-Path ./publish)" `
             "-dest:contentPath=${{ secrets.MSDEPLOY_SITE_NAME }},computerName=${{ secrets.MSDEPLOY_ENDPOINT }},userName=${{ secrets.MSDEPLOY_USERNAME }},password=${{ secrets.MSDEPLOY_PASSWORD }},authType=Basic" `
+            "-enableRule:AppOffline" `
+            "-skip:objectName=filePath,absolutePath=.*\\\.log$" `
+            "-skip:objectName=dirPath,absolutePath=.*\\Logs$" `
             "-allowUntrusted"
