@@ -167,6 +167,26 @@ body.app-shell {
   background: radial-gradient(circle at top left, #38bdf8, #6366f1);
 }
 
+.app-auth-links .app-nav-link {
+  color: #e5e7eb !important;
+  font-weight: 500;
+  opacity: 0.9;
+  transition: color 0.15s ease-out, opacity 0.15s ease-out, transform 0.1s ease-out;
+}
+
+.app-auth-links .app-nav-link:hover,
+.app-auth-links .app-nav-link:focus {
+  color: #38bdf8 !important;
+  opacity: 1;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.app-auth-links .app-nav-link.btn-link {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
 .border-top {
   border-top: 1px solid rgba(148, 163, 184, 0.25);
 }
