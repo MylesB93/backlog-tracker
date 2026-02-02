@@ -48,7 +48,7 @@ body.app-shell {
   width: 2rem;
   height: 2rem;
   border-radius: 0.75rem;
-  background: radial-gradient(circle at 20% 0%, #22d3ee, #0ea5e9 45%, #2563eb 85%);
+  background: radial-gradient(circle at 20% 0%, #38bdf8, #6366f1 55%, #a855f7);
   color: #020617;
   font-size: 0.85rem;
   font-weight: 800;
@@ -99,7 +99,7 @@ body.app-shell {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #38bdf8, #2563eb);
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
   border: 0;
   color: #0b1120;
   font-weight: 600;
@@ -108,7 +108,7 @@ body.app-shell {
 
 .btn-primary:hover,
 .btn-primary:focus {
-  background: linear-gradient(135deg, #0ea5e9, #1d4ed8);
+  background: linear-gradient(135deg, #0ea5e9, #4f46e5);
   box-shadow: 0 16px 40px rgba(59, 130, 246, 0.6);
 }
 
@@ -164,7 +164,7 @@ body.app-shell {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: #f9fafb;
-  background: radial-gradient(circle at top left, #38bdf8, #2563eb);
+  background: radial-gradient(circle at top left, #38bdf8, #6366f1);
 }
 
 .app-auth-links .app-nav-link {
