@@ -5,14 +5,23 @@
 	var users = Model.Users;
 }
 
-<ul>
+<section>
+	<h1 class="page-section-title">Community Backlogs</h1>
+	<p class="subtle-muted mb-3">Browse other players and see what they are currently tackling and have completed.</p>
+
 	@if (users != null)
 	{
-		@foreach (var user in users)
-		{
-			<li>
-				<a asp-area="Users" asp-page="/UserPage" asp-route-userId="@user.Id">@user.UserName</a>
-			</li>
-		}
+		<ul class="games-list">
+			@foreach (var user in users)
+			{
+				<li class="backlog-item">
+					<a asp-area="Users" asp-page="/UserPage" asp-route-userId="@user.Id">@user.UserName</a>
+				</li>
+			}
+		</ul>
 	}
-</ul>
+	else
+	{
+		<p class="subtle-muted">No users available to display.</p>
+	}
+</section>

@@ -9,30 +9,36 @@
     <link rel="stylesheet" href="~/BacklogTracker.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/styles.css" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Backlog Tracker</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+<body class="app-shell">
+    <header class="app-header">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark app-navbar">
+            <div class="container-fluid app-navbar-inner">
+                <a class="navbar-brand app-logo" asp-area="" asp-page="/Index">
+                    <span class="logo-mark">BT</span>
+                    <span class="logo-text">Backlog Tracker</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">                    
+                <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="app-main">
+        <div class="container app-container">
+            <main role="main" class="app-content">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; @DateTime.Now.Year - Backlog Tracker
+    <footer class="app-footer border-top text-muted">
+        <div class="container d-flex justify-content-between align-items-center">
+            <span>&copy; @DateTime.Now.Year - Backlog Tracker</span>
+            <span class="footer-meta">Built for gamers who finish what they start</span>
         </div>
     </footer>
 

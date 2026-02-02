@@ -2,32 +2,42 @@
 @using Microsoft.AspNetCore.Html
 @model IndexModel
 @{
-	ViewData["Title"] = "Home page";
+	ViewData["Title"] = "Backlog";
 	var user = Model.User.Identity;
 }
 
-<div class="text-center">
-	<h1 class="display-4">Backlog Tracker</h1>
-</div>
+<section class="mb-4">
+	<div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+		<div>
+			<h1 class="display-6 mb-1">Backlog Tracker</h1>
+			<p class="subtle-muted mb-0">
+				Search the catalogue and curate your personal list of games to play and complete.
+			</p>
+		</div>
+	</div>
+</section>
 
 <div id="errorMessage"></div>
 
-<form method="post" style="margin-bottom:1rem">
-	<div class="input-group">
-		<input class="form-control" asp-for="SearchTerm" name="query">
-		<div class="input-group-append">
-			<button class="btn btn-primary" type="submit">Search</button>
-		</div>
+<form method="post" class="mb-4">
+	<div class="input-group shadow-sm rounded-pill overflow-hidden search-shell">
+		<span class="input-group-text bg-transparent border-0 ps-3 pe-1 text-muted">
+			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242.656a5 5 0 1 1 0-10 5 5 0 0 1 0 10z" />
+			</svg>
+		</span>
+		<input class="form-control border-0 px-2" asp-for="SearchTerm" name="query" placeholder="Search for a game title…" />
+		<button class="btn btn-primary rounded-pill px-4" type="submit">Search</button>
 	</div>
 </form>
 
 @if (Model.GamesResponse?.Games is { Count: > 0 })
 {
-	<div class="row row-cols-4">
+	<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3">
 		@foreach (var game in Model.GamesResponse.Games)
 		{
-			<div class="col">
-				<div class="card game-card">
+			<div class="col d-flex">
+				<div class="card game-card w-100">
 					<div class="card-body">
 						<h5 class="card-title">
 							<a href="@game.Url" target="_blank">@game.Name</a>
