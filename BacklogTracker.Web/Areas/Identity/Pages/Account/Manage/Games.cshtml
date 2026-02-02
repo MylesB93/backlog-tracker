@@ -9,7 +9,8 @@
 	var user = Model.User.Identity;
 }
 
-<h3>@ViewData["Title"]</h3>
+<h3 class="page-section-title">@ViewData["Title"]</h3>
+<p class="subtle-muted mb-3">Manage your current backlog and celebrate the games you have finished.</p>
 <div id="errorMessage"></div>
 
 
@@ -27,9 +28,9 @@
 			{
 				<li class="backlog-item">
 					<a href="@game.Url" target="_blank">@game.Name</a>
-					<div class="backlog-btn">
-						<button type="button" class="btn btn-success" data-completed-game-id="@game.Id" onclick="addToCompleted(this,'@user?.Name?.Trim()')" )>✓</button>
-						<button type="button" class="btn btn-danger" data-game-id="@game.Id" onclick="removeFromBacklog(this,'@user?.Name?.Trim()')" )>X</button>
+					<div class="backlog-btn d-flex gap-2">
+						<button type="button" class="btn btn-success btn-sm px-3" data-completed-game-id="@game.Id" onclick="addToCompleted(this,'@user?.Name?.Trim()')">✓</button>
+						<button type="button" class="btn btn-danger btn-sm px-3" data-game-id="@game.Id" onclick="removeFromBacklog(this,'@user?.Name?.Trim()')">X</button>
 					</div>
 				</li>
 			}
@@ -42,7 +43,7 @@
 	}
 </div>
 
-<h3>Completed Games</h3>
+<h3 class="page-section-title mt-4">Completed Games</h3>
 <div>
 	@if (completedGames != null && completedGames.Any())
 	{
