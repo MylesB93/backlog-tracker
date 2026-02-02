@@ -29,8 +29,8 @@
 				<li class="backlog-item">
 					<a href="@game.Url" target="_blank">@game.Name</a>
 					<div class="backlog-btn d-flex gap-2">
-						<button type="button" class="btn btn-success btn-sm px-3" data-completed-game-id="@game.Id" onclick="addToCompleted(this,'@user?.Name?.Trim()')">✓</button>
-						<button type="button" class="btn btn-danger btn-sm px-3" data-game-id="@game.Id" onclick="removeFromBacklog(this,'@user?.Name?.Trim()')">X</button>
+						<button type="button" class="btn btn-success btn-sm px-3" data-completed-game-id="@game.Id" onclick="addToCompleted(this,'@user?.Name?.Trim()')" aria-label="Mark as completed">✓</button>
+						<button type="button" class="btn btn-danger btn-sm px-3" data-game-id="@game.Id" onclick="removeFromBacklog(this,'@user?.Name?.Trim()')" aria-label="Remove from backlog">X</button>
 					</div>
 				</li>
 			}
