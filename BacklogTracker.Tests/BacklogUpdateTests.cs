@@ -442,4 +442,124 @@ public class BacklogUpdateTests
 		var gameIds = Assert.IsType<List<string>>(result?.Value);
 		Assert.Empty(gameIds);
 	}
+
+	// Test for null UserDto
+	[Fact]
+	public void AddToBacklog_WhenUserDtoIsNull_LetsCatchBlockHandle_Returns500StatusCode()
+	{
+		// Arrange
+		_backlogServiceMock.Setup(s => s.AddToBacklog(null!)).Throws(new NullReferenceException());
+
+		// Act
+		var result = _controller.AddToBacklog(null!) as ObjectResult;
+
+		// Assert
+		Assert.Equal(500, result?.StatusCode);
+	}
+
+	[Fact]
+	public void RemoveFromBacklog_WhenUserDtoIsNull_LetsCatchBlockHandle_Returns500StatusCode()
+	{
+		// Arrange
+		_backlogServiceMock.Setup(s => s.RemoveFromBacklog(null!)).Throws(new NullReferenceException());
+
+		// Act
+		var result = _controller.RemoveFromBacklog(null!) as ObjectResult;
+
+		// Assert
+		Assert.Equal(500, result?.StatusCode);
+	}
+
+	[Fact]
+	public void AddToCompleted_WhenUserDtoIsNull_LetsCatchBlockHandle_Returns500StatusCode()
+	{
+		// Arrange
+		_backlogServiceMock.Setup(s => s.AddToCompleted(null!)).Throws(new NullReferenceException());
+
+		// Act
+		var result = _controller.AddToCompleted(null!) as ObjectResult;
+
+		// Assert
+		Assert.Equal(500, result?.StatusCode);
+	}
+
+	[Fact]
+	public void MoveFromCompletedToBacklog_WhenUserDtoIsNull_LetsCatchBlockHandle_Returns500StatusCode()
+	{
+		// Arrange
+		_backlogServiceMock.Setup(s => s.RemoveFromCompleted(null!)).Throws(new NullReferenceException());
+
+		// Act
+		var result = _controller.MoveFromCompletedToBacklog(null!) as ObjectResult;
+
+		// Assert
+		Assert.Equal(500, result?.StatusCode);
+	}
+
+	// Test for partial failure in MoveFromCompletedToBacklog
+	[Fact]
+	public void MoveFromCompletedToBacklog_WhenRemoveFromCompletedFails_Returns500StatusCode()
+	{
+		// Arrange - Setup RemoveFromCompleted to throw but AddToBacklog to succeed
+		var testUserDto = new UserDto() { Email = "partial@test.com", GameID = "7777" };
+		_backlogServiceMock.Setup(s => s.RemoveFromCompleted(testUserDto)).Throws(new Exception("Cannot remove"));
+		_backlogServiceMock.Setup(s => s.AddToBacklog(testUserDto));
+
+		// Act
+		var result = _controller.MoveFromCompletedToBacklog(testUserDto) as ObjectResult;
+
+		// Assert
+		Assert.Equal(500, result?.StatusCode);
+		// Verify that AddToBacklog was never called because RemoveFromCompleted threw first
+		_backlogServiceMock.Verify(s => s.AddToBacklog(testUserDto), Times.Never);
+	}
+
+	[Fact]
+	public void MoveFromCompletedToBacklog_WhenAddToBacklogFailsAfterRemove_Returns500StatusCode()
+	{
+		// Arrange - RemoveFromCompleted succeeds but AddToBacklog fails
+		var testUserDto = new UserDto() { Email = "partial2@test.com", GameID = "8888" };
+		_backlogServiceMock.Setup(s => s.RemoveFromCompleted(testUserDto));
+		_backlogServiceMock.Setup(s => s.AddToBacklog(testUserDto)).Throws(new Exception("Cannot add to backlog"));
+
+		// Act
+		var result = _controller.MoveFromCompletedToBacklog(testUserDto) as ObjectResult;
+
+		// Assert
+		Assert.Equal(500, result?.StatusCode);
+		// Verify both methods were called
+		_backlogServiceMock.Verify(s => s.RemoveFromCompleted(testUserDto), Times.Once);
+		_backlogServiceMock.Verify(s => s.AddToBacklog(testUserDto), Times.Once);
+	}
+
+	// Test that GetUsersBacklog verifies correct email is passed
+	[Fact]
+	public void GetUsersBacklog_PassesCorrectEmailToService()
+	{
+		// Arrange
+		string testEmail = "specific@test.com";
+		_backlogServiceMock.Setup(s => s.GetBacklog(testEmail)).Returns(new List<string>());
+
+		// Act
+		_controller.GetUsersBacklog(testEmail);
+
+		// Assert
+		_backlogServiceMock.Verify(s => s.GetBacklog(testEmail), Times.Once);
+		_backlogServiceMock.Verify(s => s.GetBacklog(It.IsAny<string>()), Times.Once);
+	}
+
+	// Test ArgumentException is caught and returns 409 Conflict
+	[Fact]
+	public void AddToBacklog_WhenArgumentExceptionThrown_Returns409StatusCode()
+	{
+		// Arrange
+		var conflictUserDto = new UserDto() { Email = "conflict@test.com", GameID = "3333" };
+		_backlogServiceMock.Setup(s => s.AddToBacklog(conflictUserDto)).Throws(new ArgumentException("Duplicate"));
+
+		// Act
+		var result = _controller.AddToBacklog(conflictUserDto) as ObjectResult;
+
+		// Assert
+		Assert.Equal(409, result?.StatusCode);
+	}
 }
