@@ -11,12 +11,12 @@ using System.Text.Json;
 
 namespace BacklogTracker.Tests;
 
-public class IGDBServiceTests
+public class IGDBServiceTests : IDisposable
 {
 	private readonly Mock<ILogger<IGDBService>> _loggerMock;
 	private readonly Mock<IOptions<IGDBConfiguration>> _configMock;
 	private readonly Mock<IHttpClientFactory> _httpClientFactoryMock;
-	private readonly Mock<IMemoryCache> _cacheMock;
+	private readonly IMemoryCache _cache;
 	private readonly IGDBService _igdbService;
 
 	private readonly IGDBConfiguration _testConfig;
@@ -26,12 +26,12 @@ public class IGDBServiceTests
 		_loggerMock = new Mock<ILogger<IGDBService>>();
 		_configMock = new Mock<IOptions<IGDBConfiguration>>();
 		_httpClientFactoryMock = new Mock<IHttpClientFactory>();
-		_cacheMock = new Mock<IMemoryCache>();
+		_cache = new MemoryCache(new MemoryCacheOptions());
 
 		_testConfig = new IGDBConfiguration { GameLimit = 10 };
 		_configMock.Setup(c => c.Value).Returns(_testConfig);
 
-		_igdbService = new IGDBService(_loggerMock.Object, _configMock.Object, _httpClientFactoryMock.Object, _cacheMock.Object);
+		_igdbService = new IGDBService(_loggerMock.Object, _configMock.Object, _httpClientFactoryMock.Object, _cache);
 	}
 
 	// GetGamesAsync tests - null/whitespace query
@@ -226,7 +226,8 @@ public class IGDBServiceTests
 			new IGDBGame { Id = 2, Name = "Game2", Url = "url2", Storyline = "story2" }
 		});
 
-		var mockHttpClient = new HttpClient(new MockHttpMessageHandler(jsonResponse, HttpStatusCode.OK))
+		var handler = new MockHttpMessageHandler(jsonResponse, HttpStatusCode.OK);
+		var mockHttpClient = new HttpClient(handler)
 		{
 			BaseAddress = new Uri("https://api.igdb.com/v4/")
 		};
@@ -237,10 +238,11 @@ public class IGDBServiceTests
 
 		// Assert
 		Assert.NotNull(result);
+		Assert.Equal(HttpMethod.Post, handler.LastRequest?.Method);
 	}
 
 	[Fact]
-	public async Task GetUsersGamesAsync_MapsBigDecimalIdPropertyCorrectly()
+	public async Task GetUsersGamesAsync_MapsGameIdsCorrectly()
 	{
 		// Arrange
 		var gameIds = new List<string> { "1", "2", "3" };
@@ -262,6 +264,10 @@ public class IGDBServiceTests
 
 		// Assert
 		Assert.NotNull(result);
+		Assert.NotNull(result.Games);
+		Assert.Contains(result.Games, g => g.Id == "1");
+		Assert.Contains(result.Games, g => g.Id == "2");
+		Assert.Contains(result.Games, g => g.Id == "3");
 	}
 
 	[Fact]
@@ -309,6 +315,8 @@ public class IGDBServiceTests
 		private readonly string _responseContent;
 		private readonly HttpStatusCode _statusCode;
 
+		public HttpRequestMessage? LastRequest { get; private set; }
+
 		public MockHttpMessageHandler(string responseContent, HttpStatusCode statusCode)
 		{
 			_responseContent = responseContent;
@@ -317,6 +325,7 @@ public class IGDBServiceTests
 
 		protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
 		{
+			LastRequest = request;
 			var response = new HttpResponseMessage(_statusCode)
 			{
 				Content = new StringContent(_responseContent)
@@ -324,5 +333,10 @@ public class IGDBServiceTests
 			response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 			return Task.FromResult(response);
 		}
+	}
+
+	public void Dispose()
+	{
+		_cache.Dispose();
 	}
 }
