@@ -216,7 +216,7 @@ public class IGDBServiceTests
 	}
 
 	[Fact]
-	public async Task GetUsersGamesAsync_UsesPostRequest()
+	public async Task GetUsersGamesAsync_ReturnsNonNullResult_WhenGivenValidIds()
 	{
 		// Arrange
 		var gameIds = new List<string> { "1", "2" };
@@ -237,6 +237,33 @@ public class IGDBServiceTests
 
 		// Assert
 		Assert.NotNull(result);
+	}
+
+	[Fact]
+	public async Task GetUsersGamesAsync_UsesPostRequest()
+	{
+		// Arrange
+		var gameIds = new List<string> { "1", "2" };
+		var jsonResponse = JsonSerializer.Serialize(new List<IGDBGame>
+		{
+			new IGDBGame { Id = 1, Name = "Game1", Url = "url1", Storyline = "story1" },
+			new IGDBGame { Id = 2, Name = "Game2", Url = "url2", Storyline = "story2" }
+		});
+
+		var handler = new MockHttpMessageHandler(jsonResponse, HttpStatusCode.OK);
+		var mockHttpClient = new HttpClient(handler)
+		{
+			BaseAddress = new Uri("https://api.igdb.com/v4/")
+		};
+		_httpClientFactoryMock.Setup(f => f.CreateClient("IGDB")).Returns(mockHttpClient);
+
+		// Act
+		await _igdbService.GetUsersGamesAsync(gameIds);
+
+		// Assert
+		Assert.NotNull(handler.LastRequest);
+		Assert.Equal(HttpMethod.Post, handler.LastRequest.Method);
+		Assert.Equal("/v4/games", handler.LastRequest.RequestUri?.AbsolutePath);
 	}
 
 	[Fact]
@@ -309,6 +336,8 @@ public class IGDBServiceTests
 		private readonly string _responseContent;
 		private readonly HttpStatusCode _statusCode;
 
+		public HttpRequestMessage? LastRequest { get; private set; }
+
 		public MockHttpMessageHandler(string responseContent, HttpStatusCode statusCode)
 		{
 			_responseContent = responseContent;
@@ -317,6 +346,7 @@ public class IGDBServiceTests
 
 		protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
 		{
+			LastRequest = request;
 			var response = new HttpResponseMessage(_statusCode)
 			{
 				Content = new StringContent(_responseContent)
