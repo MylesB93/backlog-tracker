@@ -1,0 +1,68 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  DOTNET_VERSION: '9.0.x'
+  AZURE_WEBAPP_PACKAGE_PATH: './publish'
+  PROJECT_PATH: './BacklogTracker.Web/BacklogTracker.Web.csproj'
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build solution
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Run tests
+      run: dotnet test --configuration Release --no-build --verbosity normal
+
+    - name: Publish application
+      run: |
+        dotnet publish ${{ env.PROJECT_PATH }} `
+          --configuration Release `
+          --no-build `
+          --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+    - name: Deploy to Production via Web Deploy
+      shell: pwsh
+      run: |
+        # Install Web Deploy module if not present
+        if (-not (Get-Command 'msdeploy' -ErrorAction SilentlyContinue)) {
+          Write-Host "Installing Web Deploy..."
+          choco install webdeploy -y
+        }
+
+        # Deploy using Web Deploy
+        & 'C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe' `
+          -verb:sync `
+          -source:contentPath='${{ env.AZURE_WEBAPP_PACKAGE_PATH }}' `
+          -dest:contentPath='${{ secrets.MSDEPLOY_SITE_NAME }}',`
+               computerName='${{ secrets.MSDEPLOY_SERVICE_URL }}',`
+               userName='${{ secrets.MSDEPLOY_USERNAME }}',`
+               password='${{ secrets.MSDEPLOY_PASSWORD }}',`
+               authtype='Basic' `
+          -enableRule:AppOffline `
+          -skip:Directory='\\App_Data' `
+          -verbose
+
+    - name: Deployment Summary
+      if: success()
+      run: |
+        echo "::notice::Deployment to ${{ secrets.MSDEPLOY_SITE_NAME }} completed successfully!"
+        echo "::notice::Site URL: http://mylesb93-001-site1.jtempurl.com/"
